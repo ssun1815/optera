@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { runDiscoveryLogic } from '@/app/lib/discovery'
 
-export const maxDuration = 120
+export const maxDuration = 300
 
 export async function GET(request: Request) {
   const authHeader = request.headers.get('authorization')
