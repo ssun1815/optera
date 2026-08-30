@@ -334,7 +334,7 @@ export default function Home() {
 
       <section id="pricing" className="mx-auto max-w-6xl px-6 py-24">
         <h2 className="text-2xl font-medium text-[var(--color-navy-900)]">
-          Simple pricing
+          Transparent Pricing
         </h2>
         <div className="mt-10 grid gap-10 md:grid-cols-2 md:items-start">
           <div className="rounded-lg border border-[var(--color-navy-900)]/10 bg-[var(--color-off-white)] p-8 shadow-sm">
