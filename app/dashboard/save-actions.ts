@@ -24,3 +24,20 @@ export async function toggleSaveOpportunity(opportunityId: string, isSaved: bool
   revalidatePath('/dashboard/saved')
   revalidatePath(`/dashboard/opportunities/${opportunityId}`)
 }
+
+export async function updateNote(opportunityId: string, formData: FormData) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return
+
+  const notes = formData.get('notes') as string
+
+  await supabase
+    .from('saved_opportunities')
+    .update({ notes })
+    .eq('user_id', user.id)
+    .eq('opportunity_id', opportunityId)
+
+  revalidatePath('/dashboard/saved')
+  revalidatePath(`/dashboard/opportunities/${opportunityId}`)
+}

@@ -1,7 +1,7 @@
 import { createClient } from '@/app/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
 import { logout } from '../../actions'
-import { toggleSaveOpportunity } from '../../save-actions'
+import { toggleSaveOpportunity, updateNote } from '../../save-actions'
 import { Header } from '@/app/components/Header'
 import Link from 'next/link'
 
@@ -60,9 +60,9 @@ export default async function OpportunityDetailPage({
     .eq('opportunity_id', id)
     .order('investigation_priority', { ascending: true })
 
-  const { data: savedRow } = await supabase
+    const { data: savedRow } = await supabase
     .from('saved_opportunities')
-    .select('opportunity_id')
+    .select('opportunity_id, notes')
     .eq('user_id', user.id)
     .eq('opportunity_id', id)
     .maybeSingle()
@@ -112,7 +112,7 @@ export default async function OpportunityDetailPage({
                 <span className="text-[9px] leading-none text-[var(--color-off-white)]/50">/10</span>
               </div>
             </div>
-            <form action={toggleSaveOpportunity.bind(null, opp.id, isSaved)} className="mt-4">
+                        <form action={toggleSaveOpportunity.bind(null, opp.id, isSaved)} className="mt-4">
               <button
                 type="submit"
                 className={`rounded-md border px-4 py-1.5 text-sm font-medium transition ${
@@ -124,6 +124,28 @@ export default async function OpportunityDetailPage({
                 {isSaved ? 'Saved' : 'Save Opportunity'}
               </button>
             </form>
+
+            {isSaved && (
+              <form action={updateNote.bind(null, opp.id)} className="mt-4 border-t border-[var(--color-navy-900)]/10 pt-4">
+                <label htmlFor="notes" className="text-xs font-medium text-[var(--color-ink)]/50">
+                  Your notes (private, only visible to you)
+                </label>
+                <textarea
+                  id="notes"
+                  name="notes"
+                  defaultValue={savedRow?.notes ?? ''}
+                  rows={2}
+                  placeholder="e.g. Called the GC on 8/30, waiting on a callback about MEP bidding..."
+                  className="mt-1 w-full rounded-md border border-[var(--color-navy-900)]/20 px-3 py-2 text-sm"
+                />
+                <button
+                  type="submit"
+                  className="mt-2 rounded-md bg-[var(--color-navy-900)] px-3 py-1 text-xs font-medium text-white hover:bg-[var(--color-navy-700)]"
+                >
+                  Save note
+                </button>
+              </form>
+            )}
           </div>
 
           {/* WHY OPTERA FLAGGED THIS */}
