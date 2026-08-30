@@ -24,12 +24,184 @@ export default function Home() {
     </>
   )
 
+  const trackItems = [
+    {
+      title: "Warehouses & Distribution",
+      body: "Large-format logistics facilities with significant dock and mechanical needs.",
+      icon: (
+        <>
+          <polyline points="3,10 12,4 21,10" />
+          <rect x="4" y="10" width="16" height="10" />
+          <rect x="10" y="14" width="4" height="6" />
+        </>
+      ),
+    },
+    {
+      title: "Manufacturing & Industrial",
+      body: "Production and cleanroom facilities, often with specialized HVAC requirements.",
+      icon: (
+        <>
+          <rect x="3" y="12" width="18" height="8" />
+          <polyline points="6,12 6,8 10,10 10,7 14,9 14,12" />
+          <line x1="17" y1="12" x2="17" y2="6" />
+          <circle cx="17" cy="5" r="1" fill="currentColor" stroke="none" />
+        </>
+      ),
+    },
+    {
+      title: "Data Centers",
+      body: "High-density compute facilities requiring intensive, precise cooling infrastructure.",
+      icon: (
+        <>
+          <rect x="4" y="4" width="16" height="4" />
+          <rect x="4" y="10" width="16" height="4" />
+          <rect x="4" y="16" width="16" height="4" />
+          <circle cx="7" cy="6" r="0.8" fill="currentColor" stroke="none" />
+          <circle cx="7" cy="12" r="0.8" fill="currentColor" stroke="none" />
+          <circle cx="7" cy="18" r="0.8" fill="currentColor" stroke="none" />
+        </>
+      ),
+    },
+    {
+      title: "Hotels & Hospitality",
+      body: "New-build and renovated properties with central plant and guest room HVAC needs.",
+      icon: (
+        <>
+          <line x1="3" y1="19" x2="3" y2="9" />
+          <line x1="21" y1="19" x2="21" y2="13" />
+          <rect x="3" y="13" width="18" height="6" />
+          <rect x="5" y="9" width="6" height="4" />
+        </>
+      ),
+    },
+    {
+      title: "Healthcare Facilities",
+      body: "Hospitals and clinical buildings with complex, mission-critical mechanical systems.",
+      icon: (
+        <>
+          <rect x="10" y="4" width="4" height="16" />
+          <rect x="4" y="10" width="16" height="4" />
+        </>
+      ),
+    },
+    {
+      title: "Office Developments",
+      body: "New towers and major renovations with multi-tenant HVAC infrastructure.",
+      icon: (
+        <>
+          <rect x="5" y="3" width="14" height="18" />
+          <rect x="8" y="6" width="2" height="2" />
+          <rect x="14" y="6" width="2" height="2" />
+          <rect x="8" y="11" width="2" height="2" />
+          <rect x="14" y="11" width="2" height="2" />
+          <rect x="8" y="16" width="2" height="2" />
+          <rect x="14" y="16" width="2" height="2" />
+        </>
+      ),
+    },
+  ]
+
+  const faqs = [
+    {
+      q: "Why is the first month different?",
+      a: "The $99 first month is an introductory offer designed to make it easy to try Optera and see the value before committing to the standard rate.",
+    },
+    {
+      q: "Can I cancel anytime?",
+      a: "Yes. There's no long-term contract. Cancel from your account at any time and you won't be billed again.",
+    },
+    {
+      q: "How is my payment handled?",
+      a: "All payments are processed securely by Stripe. Optera never stores your full card details.",
+    },
+    {
+      q: "How often is the database updated?",
+      a: "New opportunities are researched and added on an ongoing basis as they're identified and verified.",
+    },
+  ]
+
   return (
     <main>
       <Header right={navRight} />
 
-      <section className="bg-[var(--color-navy-950)]">
-        <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 md:grid-cols-2 md:items-center md:py-28">
+      <section className="relative overflow-hidden bg-[var(--color-navy-950)]">
+        <svg
+          className="pointer-events-none absolute inset-0 h-full w-full"
+          viewBox="0 0 1200 700"
+          preserveAspectRatio="xMidYMid slice"
+          aria-hidden="true"
+        >
+          <g stroke="var(--color-off-white)" strokeOpacity="0.14" strokeWidth="1" fill="none">
+            <line x1="150" y1="120" x2="340" y2="80" />
+            <line x1="150" y1="120" x2="120" y2="340" />
+            <line x1="150" y1="120" x2="60" y2="220" />
+            <line x1="340" y1="80" x2="500" y2="200" />
+            <line x1="340" y1="80" x2="720" y2="180" />
+            <line x1="500" y1="200" x2="300" y2="280" />
+            <line x1="500" y1="200" x2="600" y2="320" />
+            <line x1="300" y1="280" x2="120" y2="340" />
+            <line x1="300" y1="280" x2="250" y2="460" />
+            <line x1="300" y1="280" x2="430" y2="420" />
+            <line x1="120" y1="340" x2="60" y2="220" />
+            <line x1="120" y1="340" x2="250" y2="460" />
+            <line x1="250" y1="460" x2="430" y2="420" />
+            <line x1="250" y1="460" x2="180" y2="540" />
+            <line x1="250" y1="460" x2="360" y2="600" />
+            <line x1="430" y1="420" x2="600" y2="320" />
+            <line x1="430" y1="420" x2="500" y2="560" />
+            <line x1="600" y1="320" x2="720" y2="180" />
+            <line x1="600" y1="320" x2="880" y2="480" />
+            <line x1="600" y1="320" x2="700" y2="520" />
+            <line x1="720" y1="180" x2="850" y2="260" />
+            <line x1="720" y1="180" x2="950" y2="120" />
+            <line x1="850" y1="260" x2="950" y2="120" />
+            <line x1="850" y1="260" x2="880" y2="480" />
+            <line x1="850" y1="260" x2="1080" y2="220" />
+            <line x1="950" y1="120" x2="1080" y2="220" />
+            <line x1="1080" y1="220" x2="1150" y2="380" />
+            <line x1="1080" y1="220" x2="1020" y2="400" />
+            <line x1="1020" y1="400" x2="880" y2="480" />
+            <line x1="1020" y1="400" x2="1150" y2="380" />
+            <line x1="880" y1="480" x2="700" y2="520" />
+            <line x1="700" y1="520" x2="500" y2="560" />
+            <line x1="500" y1="560" x2="360" y2="600" />
+            <line x1="360" y1="600" x2="180" y2="540" />
+          </g>
+
+          <circle cx="150" cy="120" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
+          <circle cx="340" cy="80" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
+          <circle cx="500" cy="200" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
+          <circle cx="120" cy="340" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
+          <circle cx="60" cy="220" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
+          <circle cx="600" cy="320" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
+          <circle cx="720" cy="180" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
+          <circle cx="850" cy="260" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
+          <circle cx="950" cy="120" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
+          <circle cx="1080" cy="220" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
+          <circle cx="1150" cy="380" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
+          <circle cx="1020" cy="400" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
+          <circle cx="700" cy="520" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
+          <circle cx="500" cy="560" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
+          <circle cx="360" cy="600" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
+
+          <g>
+            <circle cx="430" cy="420" r="16" fill="none" stroke="var(--color-amber)" strokeWidth="0.5" opacity="0.25" />
+            <circle cx="430" cy="420" r="9" fill="none" stroke="var(--color-amber)" strokeWidth="1" opacity="0.45" />
+            <circle cx="430" cy="420" r="4.5" fill="var(--color-amber)" />
+          </g>
+          <g>
+            <circle cx="880" cy="480" r="16" fill="none" stroke="var(--color-amber)" strokeWidth="0.5" opacity="0.25" />
+            <circle cx="880" cy="480" r="9" fill="none" stroke="var(--color-amber)" strokeWidth="1" opacity="0.45" />
+            <circle cx="880" cy="480" r="4.5" fill="var(--color-amber)" />
+          </g>
+          <g>
+            <circle cx="180" cy="540" r="16" fill="none" stroke="var(--color-amber)" strokeWidth="0.5" opacity="0.25" />
+            <circle cx="180" cy="540" r="9" fill="none" stroke="var(--color-amber)" strokeWidth="1" opacity="0.45" />
+            <circle cx="180" cy="540" r="4.5" fill="var(--color-amber)" />
+          </g>
+        </svg>
+
+        <div className="relative mx-auto grid max-w-6xl gap-12 px-6 py-20 md:grid-cols-2 md:items-center md:py-28">
           <div>
             <p className="font-[family-name:var(--font-mono)] text-xs tracking-widest text-[var(--color-amber-light)]">
               DALLAS-FORT WORTH - COMMERCIAL HVAC
@@ -59,7 +231,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="rounded-lg bg-[var(--color-off-white)] p-6 shadow-2xl md:justify-self-end md:max-w-sm">
+          <div className="relative rounded-lg bg-[var(--color-off-white)] p-6 shadow-2xl md:justify-self-end md:max-w-sm">
             <div className="flex items-center justify-between">
               <p className="font-[family-name:var(--font-mono)] text-[10px] tracking-widest text-[var(--color-amber)]">
                 REAL SIGNAL - VERIFIED
@@ -138,18 +310,22 @@ export default function Home() {
           <h2 className="text-2xl font-medium text-[var(--color-navy-900)]">
             What we track
           </h2>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-            {[
-              "Warehouses and distribution centers",
-              "Manufacturing and industrial facilities",
-              "Data centers",
-              "Hotels and hospitality",
-              "Healthcare facilities",
-              "Office developments",
-            ].map((type) => (
-              <div key={type} className="flex items-start gap-3 rounded-md bg-[var(--color-off-white)] p-4">
-                <span className="mt-1 h-2 w-2 flex-shrink-0 bg-[var(--color-amber)]" />
-                <span className="text-sm text-[var(--color-ink)]">{type}</span>
+          <p className="mt-2 max-w-lg text-sm text-[var(--color-ink)]/60">
+            Six categories of commercial and industrial development, each scored specifically for HVAC relevance.
+          </p>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 md:grid-cols-3">
+            {trackItems.map((item) => (
+              <div
+                key={item.title}
+                className="rounded-lg border border-[var(--color-navy-900)]/10 bg-[var(--color-off-white)] p-6 transition hover:border-[var(--color-navy-900)]/20 hover:shadow-sm"
+              >
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-amber)]/10 text-[var(--color-amber)]">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    {item.icon}
+                  </svg>
+                </div>
+                <h3 className="mt-4 text-sm font-medium text-[var(--color-navy-900)]">{item.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink)]/60">{item.body}</p>
               </div>
             ))}
           </div>
@@ -160,25 +336,46 @@ export default function Home() {
         <h2 className="text-2xl font-medium text-[var(--color-navy-900)]">
           Simple pricing
         </h2>
-        <div className="mt-10 max-w-md rounded-lg border border-[var(--color-navy-900)]/10 bg-[var(--color-off-white)] p-8 shadow-sm">
-          <p className="font-[family-name:var(--font-mono)] text-4xl text-[var(--color-navy-900)]">
-            $99
-            <span className="text-base text-[var(--color-ink)]/50"> first month</span>
-          </p>
-          <p className="mt-1 text-sm text-[var(--color-ink)]/60">
-            then $149/month
-          </p>
-          <ul className="mt-6 space-y-2 text-sm text-[var(--color-ink)]/80">
-            <li>Full DFW commercial opportunity database</li>
-            <li>New verified opportunities added regularly</li>
-            <li>Cancel anytime, no long-term contract</li>
-          </ul>
-          <Link
-            href="/signup"
-            className="mt-8 block rounded-md bg-[var(--color-amber)] px-6 py-3 text-center text-sm font-medium text-[var(--color-navy-950)] transition hover:bg-[var(--color-amber-light)]"
-          >
-            Get started
-          </Link>
+        <div className="mt-10 grid gap-10 md:grid-cols-2 md:items-start">
+          <div className="rounded-lg border border-[var(--color-navy-900)]/10 bg-[var(--color-off-white)] p-8 shadow-sm">
+            <p className="font-[family-name:var(--font-mono)] text-4xl text-[var(--color-navy-900)]">
+              $99
+              <span className="text-base text-[var(--color-ink)]/50"> first month</span>
+            </p>
+            <p className="mt-1 text-sm text-[var(--color-ink)]/60">
+              then $149/month
+            </p>
+            <ul className="mt-6 space-y-3 text-sm text-[var(--color-ink)]/80">
+              {[
+                "Full DFW commercial opportunity database",
+                "New verified opportunities added regularly",
+                "Save opportunities and track your pipeline",
+                "Cancel anytime, no long-term contract",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2">
+                  <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-[var(--color-amber)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/signup"
+              className="mt-8 block rounded-md bg-[var(--color-amber)] px-6 py-3 text-center text-sm font-medium text-[var(--color-navy-950)] transition hover:bg-[var(--color-amber-light)]"
+            >
+              Get started
+            </Link>
+          </div>
+
+          <div className="space-y-6">
+            {faqs.map((item) => (
+              <div key={item.q} className="border-b border-[var(--color-navy-900)]/10 pb-6 last:border-0">
+                <h3 className="text-sm font-medium text-[var(--color-navy-900)]">{item.q}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink)]/70">{item.a}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -192,6 +389,11 @@ export default function Home() {
             Dallas-Fort Worth HVAC contractors. It does not guarantee
             contracts, sales, or leads.
           </p>
+          <div className="mt-6 flex items-center gap-4 text-xs text-[var(--color-off-white)]/50">
+            <Link href="/terms" className="hover:text-[var(--color-off-white)]">Terms of Service</Link>
+            <span>·</span>
+            <Link href="/privacy" className="hover:text-[var(--color-off-white)]">Privacy Policy</Link>
+          </div>
           <p className="mt-6 text-xs text-[var(--color-off-white)]/30">
             (c) 2026 Optera.
           </p>
