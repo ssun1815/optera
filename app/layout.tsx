@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
-import { Figtree, JetBrains_Mono } from "next/font/google";
+import { Manrope, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const figtree = Figtree({
-  variable: "--font-figtree",
+const manrope = Manrope({
+  variable: "--font-manrope",
+  subsets: ["latin"],
+});
+
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -25,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${figtree.variable} ${jetbrainsMono.variable} antialiased`}>
+      <body className={`${manrope.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased`}>
         {children}
       </body>
     </html>

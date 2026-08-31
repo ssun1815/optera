@@ -206,7 +206,7 @@ export default function Home() {
             <p className="font-[family-name:var(--font-mono)] text-xs tracking-widest text-[var(--color-amber-light)]">
               DALLAS-FORT WORTH - COMMERCIAL HVAC
             </p>
-            <h1 className="mt-4 text-4xl font-light leading-tight text-[var(--color-off-white)] md:text-5xl">
+            <h1 className="mt-4 text-4xl font-light leading-tight tracking-tight text-[var(--color-off-white)] md:text-5xl">
               Find commercial opportunities before your competitors.
             </h1>
             <p className="mt-6 max-w-md text-base leading-relaxed text-[var(--color-off-white)]/70">
@@ -231,7 +231,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative rounded-lg bg-[var(--color-off-white)] p-6 shadow-2xl md:justify-self-end md:max-w-sm">
+          <div className="relative rounded-xl bg-[var(--color-off-white)] p-6 shadow-[0_24px_48px_rgba(0,0,0,0.35)] md:justify-self-end md:max-w-sm">
             <div className="flex items-center justify-between">
               <p className="font-[family-name:var(--font-mono)] text-[10px] tracking-widest text-[var(--color-amber)]">
                 REAL SIGNAL - VERIFIED
@@ -317,9 +317,9 @@ export default function Home() {
             {trackItems.map((item) => (
               <div
                 key={item.title}
-                className="rounded-lg border border-[var(--color-navy-900)]/10 bg-[var(--color-off-white)] p-6 transition hover:border-[var(--color-navy-900)]/20 hover:shadow-sm"
+                className="rounded-xl border border-[var(--color-navy-900)]/8 bg-[var(--color-off-white)] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.05)] transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_24px_rgba(0,0,0,0.07)]"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-amber)]/10 text-[var(--color-amber)]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-navy-900)]/8 text-[var(--color-navy-700)]">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     {item.icon}
                   </svg>
@@ -337,7 +337,7 @@ export default function Home() {
           Transparent Pricing
         </h2>
         <div className="mt-10 grid gap-10 md:grid-cols-2 md:items-start">
-          <div className="rounded-lg border border-[var(--color-navy-900)]/10 bg-[var(--color-off-white)] p-8 shadow-sm">
+          <div className="rounded-xl border border-[var(--color-navy-900)]/8 bg-[var(--color-off-white)] p-8 shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
             <p className="font-[family-name:var(--font-mono)] text-4xl text-[var(--color-navy-900)]">
               $99
               <span className="text-base text-[var(--color-ink)]/50"> first month</span>
@@ -353,7 +353,7 @@ export default function Home() {
                 "Cancel anytime, no long-term contract",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2">
-                  <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-[var(--color-amber)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-[var(--color-navy-700)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                   <span>{item}</span>

@@ -18,9 +18,9 @@ type Opportunity = {
 
 function priorityLabel(score: number | null) {
   if (score === null) return null
-  if (score >= 9) return { label: 'HIGH PRIORITY', color: 'bg-[var(--color-amber)]' }
-  if (score >= 7) return { label: 'STRONG OPPORTUNITY', color: 'bg-[var(--color-navy-700)]' }
-  return { label: 'POSSIBLE OPPORTUNITY', color: 'bg-[var(--color-ink)]/40' }
+  if (score >= 9) return { label: 'HIGH PRIORITY', bg: 'bg-[var(--color-amber)]', text: 'text-[var(--color-navy-950)]' }
+  if (score >= 7) return { label: 'STRONG OPPORTUNITY', bg: 'bg-[var(--color-navy-700)]', text: 'text-white' }
+  return { label: 'POSSIBLE OPPORTUNITY', bg: 'bg-[var(--color-ink)]/70', text: 'text-white' }
 }
 
 function daysAgo(dateStr: string | null) {
@@ -37,12 +37,12 @@ export function OpportunityCard({ opp, isSaved = false }: { opp: Opportunity; is
   const discovered = daysAgo(opp.date_discovered)
 
   return (
-    <div className="rounded-lg border border-[var(--color-navy-900)]/10 bg-white p-6 transition hover:shadow-md">
+    <div className="rounded-xl border border-[var(--color-navy-900)]/8 bg-white p-6 shadow-[0_1px_3px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(0,0,0,0.08)]">
       <div className="flex items-start justify-between gap-4">
         <div>
           <div className="flex flex-wrap items-center gap-2">
             {priority && (
-              <span className={`inline-block rounded px-2 py-0.5 font-[family-name:var(--font-mono)] text-[10px] tracking-wider text-white ${priority.color}`}>
+              <span className={`inline-block rounded px-2 py-0.5 font-[family-name:var(--font-mono)] text-[10px] tracking-wider ${priority.bg} ${priority.text}`}>
                 {priority.label}
               </span>
             )}
@@ -66,7 +66,7 @@ export function OpportunityCard({ opp, isSaved = false }: { opp: Opportunity; is
       </div>
 
       {opp.estimated_size && (
-        <p className="mt-3 font-[family-name:var(--font-mono)] text-xs text-[var(--color-ink)]/50">
+        <p className="mt-3 font-[family-name:var(--font-mono)] text-xs text-[var(--color-ink)]/60">
           {opp.estimated_size}
         </p>
       )}
@@ -76,7 +76,7 @@ export function OpportunityCard({ opp, isSaved = false }: { opp: Opportunity; is
       </p>
 
       <div className="mt-4 flex items-center justify-between border-t border-[var(--color-navy-900)]/10 pt-4">
-        <span className="text-xs text-[var(--color-ink)]/40">
+        <span className="text-xs text-[var(--color-ink)]/55">
           {discovered ? `Discovered ${discovered}` : ''}
         </span>
         <div className="flex items-center gap-3">

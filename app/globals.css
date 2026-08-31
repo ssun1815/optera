@@ -12,7 +12,26 @@
 }
 
 body {
-  background: var(--color-off-white);
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, #fdfbf6, var(--color-off-white));
   color: var(--color-ink);
-  font-family: var(--font-figtree), sans-serif;
+  font-family: var(--font-inter), sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-manrope), sans-serif;
+}
+
+input, textarea, select {
+  border-radius: 0.5rem;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--color-amber);
+  box-shadow: 0 0 0 3px rgba(189, 123, 52, 0.15);
+}
+
+button {
+  cursor: pointer;
 }
