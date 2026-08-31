@@ -25,18 +25,30 @@ export async function toggleSaveOpportunity(opportunityId: string, isSaved: bool
   revalidatePath(`/dashboard/opportunities/${opportunityId}`)
 }
 
-export async function updateNote(opportunityId: string, formData: FormData) {
+export async function addNote(opportunityId: string, formData: FormData) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return
 
-  const notes = formData.get('notes') as string
+  const content = (formData.get('content') as string)?.trim()
+  if (!content) return
 
-  await supabase
-    .from('saved_opportunities')
-    .update({ notes })
-    .eq('user_id', user.id)
-    .eq('opportunity_id', opportunityId)
+  await supabase.from('opportunity_notes').insert({
+    user_id: user.id,
+    opportunity_id: opportunityId,
+    content,
+  })
+
+  revalidatePath('/dashboard/saved')
+  revalidatePath(`/dashboard/opportunities/${opportunityId}`)
+}
+
+export async function deleteNote(noteId: string, opportunityId: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return
+
+  await supabase.from('opportunity_notes').delete().eq('id', noteId).eq('user_id', user.id)
 
   revalidatePath('/dashboard/saved')
   revalidatePath(`/dashboard/opportunities/${opportunityId}`)

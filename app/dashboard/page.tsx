@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { logout, createCheckoutSession } from './actions'
 import { Header } from '@/app/components/Header'
 import { OpportunityCard } from '@/app/components/OpportunityCard'
+import { FloatingAssistantButton } from '@/app/components/FloatingAssistantButton'
 import { actionPriorityRank } from '@/app/lib/opportunity-priority'
 import Link from 'next/link'
 
@@ -145,11 +146,19 @@ export default async function DashboardPage({
       <Header right={headerRight} />
       <main className="min-h-screen bg-[var(--color-off-white)] px-6 py-12">
         <div className="mx-auto max-w-4xl">
-          <div>
-            <p className="text-sm text-[var(--color-ink)]/60">Dallas-Fort Worth, Texas</p>
-            <h1 className="mt-1 text-2xl font-medium text-[var(--color-navy-900)]">
-              Here's what's happening in your market.
-            </h1>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-sm text-[var(--color-ink)]/60">Dallas-Fort Worth, Texas</p>
+              <h1 className="mt-1 text-2xl font-medium text-[var(--color-navy-900)]">
+                Here's what's happening in your market.
+              </h1>
+            </div>
+            <Link
+              href="/dashboard/saved"
+              className="flex-shrink-0 rounded-md border border-[var(--color-navy-900)]/20 px-4 py-2 text-sm font-medium text-[var(--color-navy-900)] hover:bg-[var(--color-off-white-alt)]"
+            >
+              View Saved
+            </Link>
           </div>
 
           {priorityOpps && priorityOpps.length > 0 && (
@@ -234,6 +243,7 @@ export default async function DashboardPage({
           </section>
         </div>
       </main>
+      <FloatingAssistantButton />
     </>
   )
 }
