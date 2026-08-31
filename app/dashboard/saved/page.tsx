@@ -38,6 +38,9 @@ export default async function SavedPage() {
       <Link href="/dashboard" className="text-sm text-[var(--color-off-white)]/70 hover:text-[var(--color-off-white)]">
         Opportunities
       </Link>
+      <Link href="/dashboard/assistant" className="text-sm text-[var(--color-off-white)]/70 hover:text-[var(--color-off-white)]">
+        Assistant
+      </Link>
       <form action={logout}>
         <button type="submit" className="text-sm text-[var(--color-off-white)]/70 underline hover:text-[var(--color-off-white)]">
           Log out

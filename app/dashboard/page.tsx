@@ -53,6 +53,9 @@ export default async function DashboardPage({
 
   const headerRight = (
     <div className="flex items-center gap-6">
+      <Link href="/dashboard/assistant" className="text-sm text-[var(--color-off-white)]/70 hover:text-[var(--color-off-white)]">
+        Assistant
+      </Link>
       <Link href="/dashboard/saved" className="text-sm text-[var(--color-off-white)]/70 hover:text-[var(--color-off-white)]">
         Saved
       </Link>
