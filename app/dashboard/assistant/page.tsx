@@ -44,9 +44,9 @@ export default async function AssistantPage() {
       <Header right={headerRight} />
       <main className="min-h-screen bg-[var(--color-off-white)] px-6 py-12">
         <div className="mx-auto max-w-3xl">
-          <h1 className="text-2xl font-medium text-[var(--color-navy-900)]">Ask Optera</h1>
+          <h1 className="text-2xl font-medium text-[var(--color-navy-900)]">Ask Optrace</h1>
           <p className="mt-1 text-sm text-[var(--color-ink)]/60">
-            Ask questions about opportunities in your database, or ask Optera to compare a few for you.
+            Ask questions about opportunities in your database, or ask Optrace to compare a few for you.
           </p>
           <div className="mt-6">
             <AssistantChat />

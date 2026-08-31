@@ -17,7 +17,7 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-base font-medium text-[var(--color-navy-900)]">1. Information We Collect</h2>
               <p className="mt-2">
-                When you create an account, we collect your email address and password (stored securely via our authentication provider, Supabase). When you subscribe, payment details are collected and processed directly by Stripe; Optera does not receive or store your full card number.
+                When you create an account, we collect your email address and password (stored securely via our authentication provider, Supabase). When you subscribe, payment details are collected and processed directly by Stripe; Optrace does not receive or store your full card number.
               </p>
             </section>
 
@@ -31,14 +31,14 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-base font-medium text-[var(--color-navy-900)]">3. Data Sources for Opportunity Content</h2>
               <p className="mt-2">
-                The commercial opportunity information in Optera's database is compiled from publicly available sources such as news articles, press releases, and public government filings. This process does not involve collecting personal data about private individuals; it concerns publicly announced commercial and industrial projects and the organisations involved in them.
+                The commercial opportunity information in Optrace's database is compiled from publicly available sources such as news articles, press releases, and public government filings. This process does not involve collecting personal data about private individuals; it concerns publicly announced commercial and industrial projects and the organisations involved in them.
               </p>
             </section>
 
             <section>
               <h2 className="text-base font-medium text-[var(--color-navy-900)]">4. Third-Party Services</h2>
               <p className="mt-2">
-                Optera relies on the following third-party services, each of which processes data under their own privacy terms: Supabase (authentication and database hosting), Stripe (payment processing), Vercel (website hosting), and Anthropic (AI-assisted research used to help identify new opportunities from public sources).
+                Optrace relies on the following third-party services, each of which processes data under their own privacy terms: Supabase (authentication and database hosting), Stripe (payment processing), Vercel (website hosting), and Anthropic (AI-assisted research used to help identify new opportunities from public sources).
               </p>
             </section>
 
@@ -66,14 +66,14 @@ export default function PrivacyPage() {
             <section>
               <h2 className="text-base font-medium text-[var(--color-navy-900)]">8. Cookies</h2>
               <p className="mt-2">
-                Optera uses essential cookies required for authentication and session management. We do not currently use third-party advertising or tracking cookies.
+                Optrace uses essential cookies required for authentication and session management. We do not currently use third-party advertising or tracking cookies.
               </p>
             </section>
 
             <section>
               <h2 className="text-base font-medium text-[var(--color-navy-900)]">9. Children's Privacy</h2>
               <p className="mt-2">
-                Optera is a business-to-business service not intended for use by individuals under 18.
+                Optrace is a business-to-business service not intended for use by individuals under 18.
               </p>
             </section>
 

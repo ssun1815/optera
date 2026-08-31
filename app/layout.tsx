@@ -13,7 +13,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Optera — Commercial Opportunity Intelligence for DFW HVAC Contractors",
+  title: "Optrace — Commercial Opportunity Intelligence for DFW HVAC Contractors",
   description:
     "Find commercial and industrial project opportunities in Dallas–Fort Worth before your competitors do.",
 };

@@ -148,10 +148,10 @@ export default async function OpportunityDetailPage({
             )}
           </div>
 
-          {/* WHY OPTERA FLAGGED THIS */}
+          {/* WHY OPTRACE FLAGGED THIS */}
           <section className="mt-6 rounded-lg border border-[var(--color-navy-900)]/10 bg-white p-6">
             <h2 className="text-sm font-medium uppercase tracking-wide text-[var(--color-amber)]">
-              Why Optera Flagged This
+              Why Optrace Flagged This
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-[var(--color-ink)]">
               {opp.reason_for_relevance}
@@ -248,7 +248,7 @@ export default async function OpportunityDetailPage({
                 {opp.timing_assessment && (
                   <div className="mt-8 border-t border-[var(--color-navy-900)]/10 pt-4">
                     <p className="text-sm font-medium text-[var(--color-navy-900)]">
-                      Optera Timing Assessment: {opp.timing_assessment}
+                      Optrace Timing Assessment: {opp.timing_assessment}
                     </p>
                     <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink)]/70">
                       {opp.timing_assessment_reason}
@@ -290,7 +290,7 @@ export default async function OpportunityDetailPage({
           {organisations && organisations.length > 0 && (
             <section className="mt-6 rounded-lg border border-[var(--color-navy-900)]/10 bg-white p-6">
               <h2 className="text-sm font-medium uppercase tracking-wide text-[var(--color-amber)]">
-                Optera Recommendation: Who to Approach
+                Optrace Recommendation: Who to Approach
               </h2>
               <ol className="mt-4 space-y-4">
                 {organisations.map((org, i) => (
@@ -308,7 +308,7 @@ export default async function OpportunityDetailPage({
                 ))}
               </ol>
               <p className="mt-4 text-xs italic text-[var(--color-ink)]/40">
-                These rankings are Optera's analysis based on available information and do not guarantee that contacting any organisation will result in a contract.
+                These rankings are Optrace's analysis based on available information and do not guarantee that contacting any organisation will result in a contract.
               </p>
             </section>
           )}

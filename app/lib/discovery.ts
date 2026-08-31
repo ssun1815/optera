@@ -15,7 +15,7 @@ export async function runDiscoveryLogic() {
     ...(existingCandidates?.map((c) => c.project_name) ?? []),
   ].filter(Boolean)
 
-  const prompt = `You are a research analyst for Optera, a B2B commercial opportunity intelligence platform for commercial HVAC contractors in the Dallas-Fort Worth, Texas metropolitan area.
+  const prompt = `You are a research analyst for Optrace, a B2B commercial opportunity intelligence platform for commercial HVAC contractors in the Dallas-Fort Worth, Texas metropolitan area.
 
 Find NEW, REAL, VERIFIABLE commercial or industrial development opportunities in the Dallas-Fort Worth metro area (including nearby counties that are part of the DFW metropolitan statistical area) that may represent potential HVAC opportunities.
 

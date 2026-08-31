@@ -9,7 +9,7 @@ export function Header({ right }: { right?: ReactNode }) {
           href="/"
           className="font-[family-name:var(--font-mono)] text-lg tracking-widest text-[var(--color-off-white)]"
         >
-          OPTERA
+          OPTRACE
         </Link>
         {right}
       </nav>

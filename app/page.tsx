@@ -104,7 +104,7 @@ export default function Home() {
   const faqs = [
     {
       q: "Why is the first month different?",
-      a: "The $99 first month is an introductory offer designed to make it easy to try Optera and see the value before committing to the standard rate.",
+      a: "The $99 first month is an introductory offer designed to make it easy to try Optrace and see the value before committing to the standard rate.",
     },
     {
       q: "Can I cancel anytime?",
@@ -112,7 +112,7 @@ export default function Home() {
     },
     {
       q: "How is my payment handled?",
-      a: "All payments are processed securely by Stripe. Optera never stores your full card details.",
+      a: "All payments are processed securely by Stripe. Optrace never stores your full card details.",
     },
     {
       q: "How often is the database updated?",
@@ -210,7 +210,7 @@ export default function Home() {
               Find commercial opportunities before your competitors.
             </h1>
             <p className="mt-6 max-w-md text-base leading-relaxed text-[var(--color-off-white)]/70">
-              Optera tracks new commercial and industrial developments across
+              Optrace tracks new commercial and industrial developments across
               DFW - warehouses, distribution centers, data centers, hotels,
               and more - and turns public signals into a curated list of HVAC
               opportunities worth your time.
@@ -270,7 +270,7 @@ export default function Home() {
 
       <section id="how-it-works" className="mx-auto max-w-6xl px-6 py-24">
         <h2 className="text-2xl font-medium text-[var(--color-navy-900)]">
-          How Optera works
+          How Optrace works
         </h2>
         <div className="mt-10 grid gap-10 md:grid-cols-3">
           {[
@@ -382,10 +382,10 @@ export default function Home() {
       <footer className="bg-[var(--color-navy-950)] py-12">
         <div className="mx-auto max-w-6xl px-6">
           <p className="font-[family-name:var(--font-mono)] text-sm tracking-widest text-[var(--color-off-white)]">
-            OPTERA
+            OPTRACE
           </p>
           <p className="mt-3 max-w-md text-xs leading-relaxed text-[var(--color-off-white)]/50">
-            Optera provides researched commercial opportunity intelligence for
+            Optrace provides researched commercial opportunity intelligence for
             Dallas-Fort Worth HVAC contractors. It does not guarantee
             contracts, sales, or leads.
           </p>
@@ -395,7 +395,7 @@ export default function Home() {
             <Link href="/privacy" className="hover:text-[var(--color-off-white)]">Privacy Policy</Link>
           </div>
           <p className="mt-6 text-xs text-[var(--color-off-white)]/30">
-            (c) 2026 Optera.
+            (c) 2026 Optrace.
           </p>
         </div>
       </footer>

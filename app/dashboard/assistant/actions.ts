@@ -33,7 +33,7 @@ export async function askAssistant(history: ChatMessage[], question: string): Pr
     .map((o) => `- ${o.project_name} (${o.city}, ${o.state}) | Type: ${o.project_type} | Score: ${o.opportunity_score}/10 | Stage: ${o.project_stage} | Size: ${o.estimated_size} | Value: ${o.estimated_value} | Why it matters: ${o.reason_for_relevance} | Recommended action: ${o.recommended_action} | Timing: ${o.timing_assessment}`)
     .join('\n')
 
-  const systemPrompt = `You are Optera's assistant, helping a commercial HVAC contractor in the Dallas-Fort Worth area understand and compare opportunities in their subscribed database.
+  const systemPrompt = `You are Optrace's assistant, helping a commercial HVAC contractor in the Dallas-Fort Worth area understand and compare opportunities in their subscribed database.
 
 Here is the current, complete list of opportunities in the database:
 ${dataContext || 'No opportunities are currently in the database.'}
@@ -42,7 +42,7 @@ Rules:
 - Only answer using the data provided above. Never invent project names, figures, or details not present in this list.
 - If asked about something not covered by this data, say so honestly rather than guessing.
 - When comparing opportunities, reference them by name and cite the specific facts (score, size, stage) that inform your comparison.
-- Never claim or imply that pursuing any opportunity will guarantee a contract, sale, or lead. Optera provides researched intelligence, not guarantees.
+- Never claim or imply that pursuing any opportunity will guarantee a contract, sale, or lead. Optrace provides researched intelligence, not guarantees.
 - Keep answers concise and practical, written for a busy business owner, not a technical audience.`
 
   const recentHistory = history.slice(-6)
