@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { toggleSaveOpportunity } from '@/app/dashboard/save-actions'
+import { urgencyBadge } from '@/app/lib/opportunity-priority'
 
 type Opportunity = {
   id: string
@@ -32,17 +33,25 @@ function daysAgo(dateStr: string | null) {
 
 export function OpportunityCard({ opp, isSaved = false }: { opp: Opportunity; isSaved?: boolean }) {
   const priority = priorityLabel(opp.opportunity_score)
+  const urgency = urgencyBadge(opp.recommended_action)
   const discovered = daysAgo(opp.date_discovered)
 
   return (
     <div className="rounded-lg border border-[var(--color-navy-900)]/10 bg-white p-6 transition hover:shadow-md">
       <div className="flex items-start justify-between gap-4">
         <div>
-          {priority && (
-            <span className={`inline-block rounded px-2 py-0.5 font-[family-name:var(--font-mono)] text-[10px] tracking-wider text-white ${priority.color}`}>
-              {priority.label}
-            </span>
-          )}
+          <div className="flex flex-wrap items-center gap-2">
+            {priority && (
+              <span className={`inline-block rounded px-2 py-0.5 font-[family-name:var(--font-mono)] text-[10px] tracking-wider text-white ${priority.color}`}>
+                {priority.label}
+              </span>
+            )}
+            {urgency && (
+              <span className={`inline-block rounded border px-2 py-0.5 font-[family-name:var(--font-mono)] text-[10px] tracking-wider ${urgency.className}`}>
+                {urgency.label}
+              </span>
+            )}
+          </div>
           <h2 className="mt-2 text-lg font-medium text-[var(--color-navy-900)]">
             {opp.project_name}
           </h2>
@@ -65,13 +74,6 @@ export function OpportunityCard({ opp, isSaved = false }: { opp: Opportunity; is
       <p className="mt-3 text-sm leading-relaxed text-[var(--color-ink)]/80">
         {opp.reason_for_relevance}
       </p>
-
-      {opp.recommended_action && (
-        <p className="mt-3 text-sm">
-          <span className="font-medium text-[var(--color-navy-900)]">Recommended: </span>
-          <span className="text-[var(--color-ink)]/70">{opp.recommended_action}</span>
-        </p>
-      )}
 
       <div className="mt-4 flex items-center justify-between border-t border-[var(--color-navy-900)]/10 pt-4">
         <span className="text-xs text-[var(--color-ink)]/40">

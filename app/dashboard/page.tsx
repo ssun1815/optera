@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { logout, createCheckoutSession } from './actions'
 import { Header } from '@/app/components/Header'
 import { OpportunityCard } from '@/app/components/OpportunityCard'
+import { actionPriorityRank } from '@/app/lib/opportunity-priority'
 import Link from 'next/link'
 
 export default async function DashboardPage({
@@ -105,11 +106,18 @@ export default async function DashboardPage({
 
   const savedIds = new Set(savedRows?.map((r) => r.opportunity_id))
 
-  const { data: priorityOpps } = await supabase
+  const { data: allOppsForPriority } = await supabase
     .from('opportunities')
     .select('*')
-    .order('opportunity_score', { ascending: false })
-    .limit(5)
+
+  const priorityOpps = (allOppsForPriority ?? [])
+    .slice()
+    .sort((a, b) => {
+      const rankDiff = actionPriorityRank(a.recommended_action) - actionPriorityRank(b.recommended_action)
+      if (rankDiff !== 0) return rankDiff
+      return (b.opportunity_score ?? 0) - (a.opportunity_score ?? 0)
+    })
+    .slice(0, 5)
 
   const category = params.category ?? ''
   const city = params.city ?? ''
