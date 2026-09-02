@@ -29,7 +29,7 @@ export default function ForgotPasswordPage() {
               </div>
               <button
                 type="submit"
-                className="w-full rounded-md bg-[var(--color-amber)] px-4 py-2 text-sm font-medium text-[var(--color-navy-950)] hover:bg-[var(--color-amber-light)]"
+                className="w-full rounded-md bg-[var(--color-amber)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-amber-light)]"
               >
                 Send reset link
               </button>

@@ -12,11 +12,11 @@ export function actionPriorityRank(action: string | null): number {
 export function urgencyBadge(action: string | null): { label: string; className: string } | null {
   if (!action) return null
   const map: Record<string, { label: string; className: string }> = {
-    'Investigate Now': { label: 'ACT NOW', className: 'border-red-200 bg-red-50 text-red-700' },
-    'Follow Up': { label: 'ACT NOW', className: 'border-red-200 bg-red-50 text-red-700' },
-    'Research Project Team': { label: 'RESEARCH TEAM', className: 'border-[var(--color-amber)]/30 bg-[var(--color-amber)]/10 text-[var(--color-amber)]' },
-    'Identify Key Organisations': { label: 'IDENTIFY CONTACTS', className: 'border-[var(--color-amber)]/30 bg-[var(--color-amber)]/10 text-[var(--color-amber)]' },
-    'Monitor Project': { label: 'MONITOR', className: 'border-[var(--color-navy-900)]/10 bg-[var(--color-off-white-alt)] text-[var(--color-ink)]/60' },
+    'Investigate Now': { label: 'ACT NOW', className: 'border-red-200 bg-red-50 text-red-800' },
+    'Follow Up': { label: 'ACT NOW', className: 'border-red-200 bg-red-50 text-red-800' },
+    'Research Project Team': { label: 'RESEARCH TEAM', className: 'border-blue-200 bg-blue-50 text-blue-800' },
+    'Identify Key Organisations': { label: 'IDENTIFY CONTACTS', className: 'border-blue-200 bg-blue-50 text-blue-800' },
+    'Monitor Project': { label: 'MONITOR', className: 'border-slate-200 bg-slate-50 text-slate-600' },
   }
   return map[action] ?? null
 }

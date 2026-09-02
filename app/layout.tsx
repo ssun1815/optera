@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope, Inter, JetBrains_Mono } from "next/font/google";
+import { Manrope, Inter, JetBrains_Mono, Newsreader } from "next/font/google";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -17,6 +17,12 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
+const newsreader = Newsreader({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  style: ["italic", "normal"],
+});
+
 export const metadata: Metadata = {
   title: "Optrace — Commercial Opportunity Intelligence for DFW HVAC Contractors",
   description:
@@ -30,7 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${manrope.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased`}>
+      <body className={`${manrope.variable} ${inter.variable} ${jetbrainsMono.variable} ${newsreader.variable} antialiased`}>
         {children}
       </body>
     </html>

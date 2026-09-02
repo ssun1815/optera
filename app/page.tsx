@@ -15,19 +15,41 @@ export default function Home() {
           Pricing
         </a>
       </div>
-      <Link
-        href="/signup"
-        className="rounded-md bg-[var(--color-amber)] px-4 py-2 text-sm font-medium text-[var(--color-navy-950)] transition hover:bg-[var(--color-amber-light)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-amber-light)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-navy-950)]"
-      >
-        Start now
-      </Link>
+      <div className="flex items-center gap-4">
+        <Link
+          href="/login"
+          className="text-sm text-[var(--color-off-white)]/80 hover:text-[var(--color-off-white)]"
+        >
+          Log in
+        </Link>
+        <Link
+          href="/signup"
+          className="rounded-md bg-[var(--color-amber)] px-4 py-2 text-sm font-medium text-white transition hover:bg-[var(--color-amber-light)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-amber-light)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-navy-950)]"
+        >
+          Start now
+        </Link>
+      </div>
     </>
   )
+
+  const stats = [
+    { value: "24", label: "Verified Opportunities" },
+    { value: "15", label: "DFW Cities Covered" },
+    { value: "Daily", label: "Automated Research" },
+    { value: "100%", label: "Human-Reviewed Before Publishing" },
+  ]
+
+  const previewOpportunities = [
+    { name: "Circle T Data Center", location: "Westlake, TX", type: "Data Center", score: "9/10", stage: "Site plans approved" },
+    { name: "ACS Group Fort Worth Campus", location: "Fort Worth, TX", type: "Data Center", score: "9/10", stage: "Under construction" },
+    { name: "IAC Pleasant Run", location: "Lancaster, TX", type: "Warehouse", score: "7/10", stage: "Under construction" },
+  ]
 
   const trackItems = [
     {
       title: "Warehouses & Distribution",
       body: "Large-format logistics facilities with significant dock and mechanical needs.",
+      points: ["Distribution centers", "Cold storage facilities", "Cross-dock terminals"],
       icon: (
         <>
           <polyline points="3,10 12,4 21,10" />
@@ -39,6 +61,7 @@ export default function Home() {
     {
       title: "Manufacturing & Industrial",
       body: "Production and cleanroom facilities, often with specialized HVAC requirements.",
+      points: ["Cleanroom manufacturing", "Heavy industrial plants", "Production expansions"],
       icon: (
         <>
           <rect x="3" y="12" width="18" height="8" />
@@ -51,6 +74,7 @@ export default function Home() {
     {
       title: "Data Centers",
       body: "High-density compute facilities requiring intensive, precise cooling infrastructure.",
+      points: ["Hyperscale campuses", "Colocation facilities", "Edge data centers"],
       icon: (
         <>
           <rect x="4" y="4" width="16" height="4" />
@@ -65,6 +89,7 @@ export default function Home() {
     {
       title: "Hotels & Hospitality",
       body: "New-build and renovated properties with central plant and guest room HVAC needs.",
+      points: ["Hotel developments", "Resort properties", "Convention centers"],
       icon: (
         <>
           <line x1="3" y1="19" x2="3" y2="9" />
@@ -77,6 +102,7 @@ export default function Home() {
     {
       title: "Healthcare Facilities",
       body: "Hospitals and clinical buildings with complex, mission-critical mechanical systems.",
+      points: ["Hospitals", "Emergency care centers", "Medical office buildings"],
       icon: (
         <>
           <rect x="10" y="4" width="4" height="16" />
@@ -87,6 +113,7 @@ export default function Home() {
     {
       title: "Office Developments",
       body: "New towers and major renovations with multi-tenant HVAC infrastructure.",
+      points: ["Class A office towers", "Corporate campuses", "Major renovations"],
       icon: (
         <>
           <rect x="5" y="3" width="14" height="18" />
@@ -124,89 +151,13 @@ export default function Home() {
     <main>
       <Header right={navRight} />
 
-      <section className="relative overflow-hidden bg-[var(--color-navy-950)]">
-        <svg
-          className="pointer-events-none absolute inset-0 h-full w-full"
-          viewBox="0 0 1200 700"
-          preserveAspectRatio="xMidYMid slice"
-          aria-hidden="true"
-        >
-          <g stroke="var(--color-off-white)" strokeOpacity="0.14" strokeWidth="1" fill="none">
-            <line x1="150" y1="120" x2="340" y2="80" />
-            <line x1="150" y1="120" x2="120" y2="340" />
-            <line x1="150" y1="120" x2="60" y2="220" />
-            <line x1="340" y1="80" x2="500" y2="200" />
-            <line x1="340" y1="80" x2="720" y2="180" />
-            <line x1="500" y1="200" x2="300" y2="280" />
-            <line x1="500" y1="200" x2="600" y2="320" />
-            <line x1="300" y1="280" x2="120" y2="340" />
-            <line x1="300" y1="280" x2="250" y2="460" />
-            <line x1="300" y1="280" x2="430" y2="420" />
-            <line x1="120" y1="340" x2="60" y2="220" />
-            <line x1="120" y1="340" x2="250" y2="460" />
-            <line x1="250" y1="460" x2="430" y2="420" />
-            <line x1="250" y1="460" x2="180" y2="540" />
-            <line x1="250" y1="460" x2="360" y2="600" />
-            <line x1="430" y1="420" x2="600" y2="320" />
-            <line x1="430" y1="420" x2="500" y2="560" />
-            <line x1="600" y1="320" x2="720" y2="180" />
-            <line x1="600" y1="320" x2="880" y2="480" />
-            <line x1="600" y1="320" x2="700" y2="520" />
-            <line x1="720" y1="180" x2="850" y2="260" />
-            <line x1="720" y1="180" x2="950" y2="120" />
-            <line x1="850" y1="260" x2="950" y2="120" />
-            <line x1="850" y1="260" x2="880" y2="480" />
-            <line x1="850" y1="260" x2="1080" y2="220" />
-            <line x1="950" y1="120" x2="1080" y2="220" />
-            <line x1="1080" y1="220" x2="1150" y2="380" />
-            <line x1="1080" y1="220" x2="1020" y2="400" />
-            <line x1="1020" y1="400" x2="880" y2="480" />
-            <line x1="1020" y1="400" x2="1150" y2="380" />
-            <line x1="880" y1="480" x2="700" y2="520" />
-            <line x1="700" y1="520" x2="500" y2="560" />
-            <line x1="500" y1="560" x2="360" y2="600" />
-            <line x1="360" y1="600" x2="180" y2="540" />
-          </g>
-
-          <circle cx="150" cy="120" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
-          <circle cx="340" cy="80" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
-          <circle cx="500" cy="200" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
-          <circle cx="120" cy="340" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
-          <circle cx="60" cy="220" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
-          <circle cx="600" cy="320" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
-          <circle cx="720" cy="180" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
-          <circle cx="850" cy="260" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
-          <circle cx="950" cy="120" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
-          <circle cx="1080" cy="220" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
-          <circle cx="1150" cy="380" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
-          <circle cx="1020" cy="400" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
-          <circle cx="700" cy="520" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
-          <circle cx="500" cy="560" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
-          <circle cx="360" cy="600" r="2.5" fill="var(--color-off-white)" fillOpacity="0.4" />
-
-          <g>
-            <circle cx="430" cy="420" r="16" fill="none" stroke="var(--color-amber)" strokeWidth="0.5" opacity="0.25" />
-            <circle cx="430" cy="420" r="9" fill="none" stroke="var(--color-amber)" strokeWidth="1" opacity="0.45" />
-            <circle cx="430" cy="420" r="4.5" fill="var(--color-amber)" />
-          </g>
-          <g>
-            <circle cx="880" cy="480" r="16" fill="none" stroke="var(--color-amber)" strokeWidth="0.5" opacity="0.25" />
-            <circle cx="880" cy="480" r="9" fill="none" stroke="var(--color-amber)" strokeWidth="1" opacity="0.45" />
-            <circle cx="880" cy="480" r="4.5" fill="var(--color-amber)" />
-          </g>
-          <g>
-            <circle cx="180" cy="540" r="16" fill="none" stroke="var(--color-amber)" strokeWidth="0.5" opacity="0.25" />
-            <circle cx="180" cy="540" r="9" fill="none" stroke="var(--color-amber)" strokeWidth="1" opacity="0.45" />
-            <circle cx="180" cy="540" r="4.5" fill="var(--color-amber)" />
-          </g>
-        </svg>
-
+      <section className="relative overflow-hidden bg-[var(--color-navy-950)] bg-[radial-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:24px_24px]">
         <div className="relative mx-auto grid max-w-6xl gap-12 px-6 py-20 md:grid-cols-2 md:items-center md:py-28">
           <div>
-            <p className="font-[family-name:var(--font-mono)] text-xs tracking-widest text-[var(--color-amber-light)]">
-              DALLAS-FORT WORTH - COMMERCIAL HVAC
+            <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-amber-light)]">
+              Dallas-Fort Worth · Commercial HVAC
             </p>
-            <h1 className="mt-4 text-4xl font-light leading-tight tracking-tight text-[var(--color-off-white)] md:text-5xl">
+            <h1 className="mt-4 font-[family-name:var(--font-serif)] text-4xl italic leading-tight text-[var(--color-off-white)] md:text-5xl">
               Find commercial opportunities before your competitors.
             </h1>
             <p className="mt-6 max-w-md text-base leading-relaxed text-[var(--color-off-white)]/70">
@@ -218,7 +169,7 @@ export default function Home() {
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
                 href="/signup"
-                className="rounded-md bg-[var(--color-amber)] px-6 py-3 text-sm font-medium text-[var(--color-navy-950)] transition hover:bg-[var(--color-amber-light)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-amber-light)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-navy-950)]"
+                className="rounded-md bg-[var(--color-amber)] px-6 py-3 text-sm font-medium text-white transition hover:bg-[var(--color-amber-light)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-amber-light)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-navy-950)]"
               >
                 Start your first month - $99
               </Link>
@@ -231,75 +182,91 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative rounded-xl bg-[var(--color-off-white)] p-6 shadow-[0_24px_48px_rgba(0,0,0,0.35)] md:justify-self-end md:max-w-sm">
-            <div className="flex items-center justify-between">
-              <p className="font-[family-name:var(--font-mono)] text-[10px] tracking-widest text-[var(--color-amber)]">
-                REAL SIGNAL - VERIFIED
-              </p>
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-navy-950)] font-[family-name:var(--font-mono)] text-sm text-[var(--color-amber-light)]">
-                9
+          <div className="relative md:justify-self-end md:max-w-md">
+            <div
+              className="absolute -bottom-3 -right-3 h-full w-full rounded-md border border-[var(--color-border)] bg-white opacity-50"
+              aria-hidden="true"
+            />
+
+            <div className="relative rounded-md border border-[var(--color-border)] bg-white shadow-[0_1px_3px_rgba(15,23,42,0.08)]">
+              <div className="flex items-center gap-1.5 rounded-t-md border-b border-[var(--color-border)] bg-slate-50 px-4 py-2.5">
+                <span className="h-2 w-2 rounded-full bg-slate-300" />
+                <span className="h-2 w-2 rounded-full bg-slate-300" />
+                <span className="h-2 w-2 rounded-full bg-slate-300" />
+                <span className="ml-2 font-[family-name:var(--font-mono)] text-[10px] text-[var(--color-slate-500)]">
+                  optrace.com/dashboard
+                </span>
+              </div>
+
+              <div className="divide-y divide-[var(--color-border)]">
+                {previewOpportunities.map((opp) => (
+                  <div key={opp.name} className="p-4">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-medium text-[var(--color-ink)]">{opp.name}</p>
+                      <span className="tabular-nums-feature rounded bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-[var(--color-ink)]">
+                        {opp.score}
+                      </span>
+                    </div>
+                    <p className="mt-1 text-xs text-[var(--color-slate-500)]">
+                      {opp.location} · {opp.type} · {opp.stage}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
-            <h3 className="mt-3 text-lg font-medium text-[var(--color-ink)]">
-              Circle T Data Center
-            </h3>
-            <p className="mt-1 text-sm text-[var(--color-ink)]/60">
-              Westlake, TX - Data Center
-            </p>
-            <dl className="mt-4 space-y-2 border-t border-[var(--color-navy-900)]/10 pt-4 font-[family-name:var(--font-mono)] text-xs text-[var(--color-ink)]/70">
-              <div className="flex justify-between">
-                <dt>Size</dt>
-                <dd>Up to 1.2M sq ft</dd>
+          </div>
+        </div>
+
+        <div className="relative border-t border-white/10 py-8">
+          <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-6 md:grid-cols-4">
+            {stats.map((stat, i) => (
+              <div key={stat.label} className={`pl-4 md:border-l md:border-white/10 ${i === 0 ? 'md:border-l-0 md:pl-0' : ''}`}>
+                <p className="tabular-nums-feature text-2xl font-semibold text-[var(--color-off-white)]">{stat.value}</p>
+                <p className="mt-1 text-xs uppercase tracking-wide text-[var(--color-off-white)]/50">{stat.label}</p>
               </div>
-              <div className="flex justify-between">
-                <dt>Stage</dt>
-                <dd>Site plans approved</dd>
-              </div>
-              <div className="flex justify-between">
-                <dt>Capacity</dt>
-                <dd>300MW</dd>
-              </div>
-              <div className="flex justify-between">
-                <dt>Source</dt>
-                <dd>DCD, Aug 2026</dd>
-              </div>
-            </dl>
+            ))}
           </div>
         </div>
       </section>
 
-      <section id="how-it-works" className="mx-auto max-w-6xl px-6 py-24">
-        <h2 className="text-2xl font-medium text-[var(--color-navy-900)]">
+      <section id="how-it-works" className="mx-auto max-w-6xl px-6 py-16">
+        <h2 className="text-2xl font-semibold text-[var(--color-navy-900)]">
           How Optrace works
         </h2>
-        <div className="mt-10 grid gap-10 md:grid-cols-3">
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
           {[
             {
               step: "01",
               title: "Detect",
               body: "We monitor construction news, development announcements, and public project information across DFW every day.",
+              chip: "Source: Bisnow · Aug 2026",
             },
             {
               step: "02",
               title: "Verify and score",
               body: "Every opportunity is checked against credible public sources and scored 1 to 10 for HVAC relevance.",
+              chip: "Opportunity Score: 9/10",
             },
             {
               step: "03",
               title: "Deliver",
               body: "Curated, verified opportunities land in your dashboard - no noise, no manual searching.",
+              chip: "Added to Dashboard",
             },
           ].map((item) => (
-            <div key={item.step}>
-              <p className="font-[family-name:var(--font-mono)] text-sm text-[var(--color-amber)]">
+            <div key={item.step} className="rounded-md border border-[var(--color-border)] bg-white p-6">
+              <p className="text-4xl font-semibold text-slate-200">
                 {item.step}
               </p>
               <h3 className="mt-2 text-lg font-medium text-[var(--color-navy-900)]">
                 {item.title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink)]/70">
+              <p className="mt-2 text-sm leading-relaxed text-[var(--color-slate-700)]">
                 {item.body}
               </p>
+              <div className="tabular-nums-feature mt-4 inline-block rounded bg-slate-100 px-2.5 py-1 text-xs font-medium text-[var(--color-slate-700)]">
+                {item.chip}
+              </div>
             </div>
           ))}
         </div>
@@ -307,25 +274,37 @@ export default function Home() {
 
       <section id="what-we-track" className="bg-[var(--color-off-white-alt)] py-24">
         <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-2xl font-medium text-[var(--color-navy-900)]">
+          <h2 className="text-2xl font-semibold text-[var(--color-navy-900)]">
             What we track
           </h2>
-          <p className="mt-2 max-w-lg text-sm text-[var(--color-ink)]/60">
+          <p className="mt-2 max-w-lg text-sm text-[var(--color-slate-500)]">
             Six categories of commercial and industrial development, each scored specifically for HVAC relevance.
           </p>
           <div className="mt-10 grid gap-5 sm:grid-cols-2 md:grid-cols-3">
             {trackItems.map((item) => (
               <div
                 key={item.title}
-                className="rounded-xl border border-[var(--color-navy-900)]/8 bg-[var(--color-off-white)] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.05)] transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_24px_rgba(0,0,0,0.07)]"
+                className="rounded-md border border-[var(--color-border)] bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.05)]"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-navy-900)]/8 text-[var(--color-navy-700)]">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    {item.icon}
-                  </svg>
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded border border-blue-100 bg-blue-50 text-[var(--color-amber)]">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      {item.icon}
+                    </svg>
+                  </div>
+                  <h3 className="text-sm font-medium text-[var(--color-navy-900)]">{item.title}</h3>
                 </div>
-                <h3 className="mt-4 text-sm font-medium text-[var(--color-navy-900)]">{item.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink)]/60">{item.body}</p>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--color-slate-500)]">{item.body}</p>
+                <div className="mt-4 space-y-1.5 border-t border-[var(--color-border)] pt-4">
+                  {item.points.map((point) => (
+                    <div key={point} className="flex items-center gap-2 text-xs text-[var(--color-slate-700)]">
+                      <svg className="h-3 w-3 flex-shrink-0 text-[var(--color-amber)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                      {point}
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
@@ -333,19 +312,19 @@ export default function Home() {
       </section>
 
       <section id="pricing" className="mx-auto max-w-6xl px-6 py-24">
-        <h2 className="text-2xl font-medium text-[var(--color-navy-900)]">
+        <h2 className="text-2xl font-semibold text-[var(--color-navy-900)]">
           Transparent Pricing
         </h2>
         <div className="mt-10 grid gap-10 md:grid-cols-2 md:items-start">
-          <div className="rounded-xl border border-[var(--color-navy-900)]/8 bg-[var(--color-off-white)] p-8 shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
-            <p className="font-[family-name:var(--font-mono)] text-4xl text-[var(--color-navy-900)]">
+          <div className="rounded-md border border-[var(--color-border)] bg-white p-8 shadow-[0_1px_3px_rgba(15,23,42,0.06)]">
+            <p className="tabular-nums-feature text-4xl font-semibold text-[var(--color-navy-900)]">
               $99
-              <span className="text-base text-[var(--color-ink)]/50"> first month</span>
+              <span className="text-base font-normal text-[var(--color-slate-500)]"> first month</span>
             </p>
-            <p className="mt-1 text-sm text-[var(--color-ink)]/60">
+            <p className="mt-1 text-sm text-[var(--color-slate-500)]">
               then $149/month
             </p>
-            <ul className="mt-6 space-y-3 text-sm text-[var(--color-ink)]/80">
+            <ul className="mt-6 space-y-3 text-sm text-[var(--color-slate-700)]">
               {[
                 "Full DFW commercial opportunity database",
                 "New verified opportunities added regularly",
@@ -362,19 +341,44 @@ export default function Home() {
             </ul>
             <Link
               href="/signup"
-              className="mt-8 block rounded-md bg-[var(--color-amber)] px-6 py-3 text-center text-sm font-medium text-[var(--color-navy-950)] transition hover:bg-[var(--color-amber-light)]"
+              className="mt-8 block rounded-md bg-[var(--color-amber)] px-6 py-3 text-center text-sm font-medium text-white transition hover:bg-[var(--color-amber-light)]"
             >
               Get started
             </Link>
+            <p className="mt-4 text-center text-xs text-[var(--color-slate-500)]">
+              Billed monthly via Stripe · Cancel anytime · Instant DFW database access
+            </p>
           </div>
 
           <div className="space-y-6">
             {faqs.map((item) => (
-              <div key={item.q} className="border-b border-[var(--color-navy-900)]/10 pb-6 last:border-0">
+              <div key={item.q} className="border-b border-[var(--color-border)] pb-6 last:border-0">
                 <h3 className="text-sm font-medium text-[var(--color-navy-900)]">{item.q}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-ink)]/70">{item.a}</p>
+                <p className="mt-1.5 text-sm leading-relaxed text-[var(--color-slate-700)]">{item.a}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[var(--color-navy-950)] py-20">
+        <div className="mx-auto max-w-3xl px-6 text-center">
+          <h2 className="font-[family-name:var(--font-serif)] text-3xl italic leading-snug text-[var(--color-off-white)] md:text-4xl">
+            Find your next contract before your competitors even know it exists.
+          </h2>
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <Link
+              href="/signup"
+              className="rounded-md bg-[var(--color-amber)] px-6 py-3 text-sm font-medium text-white transition hover:bg-[var(--color-amber-light)]"
+            >
+              Start your first month - $99
+            </Link>
+            <Link
+              href="/login"
+              className="rounded-md border border-[var(--color-off-white)]/20 px-6 py-3 text-sm font-medium text-[var(--color-off-white)] transition hover:border-[var(--color-off-white)]/40"
+            >
+              Log in
+            </Link>
           </div>
         </div>
       </section>

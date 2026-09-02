@@ -4,15 +4,23 @@
   --color-navy-950: #0b1929;
   --color-navy-900: #12233b;
   --color-navy-700: #24476f;
-  --color-off-white: #f7f4ec;
-  --color-off-white-alt: #ede8dc;
-  --color-ink: #16202b;
-  --color-amber: #bd7b34;
-  --color-amber-light: #e4b573;
+
+  --color-off-white: #f8fafc;
+  --color-off-white-alt: #f1f5f9;
+
+  --color-ink: #0f172a;
+  --color-slate-700: #334155;
+  --color-slate-500: #64748b;
+  --color-border: #e2e8f0;
+
+  /* Note: variable names kept as "amber" for continuity across the codebase,
+     but these now hold the blue accent values per the design system update. */
+  --color-amber: #1d4ed8;
+  --color-amber-light: #2563eb;
 }
 
 body {
-  background: radial-gradient(ellipse 80% 50% at 50% 0%, #fdfbf6, var(--color-off-white));
+  background: var(--color-off-white);
   color: var(--color-ink);
   font-family: var(--font-inter), sans-serif;
 }
@@ -22,16 +30,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 input, textarea, select {
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   transition: box-shadow 0.15s ease, border-color 0.15s ease;
 }
 
 input:focus, textarea:focus, select:focus {
   outline: none;
   border-color: var(--color-amber);
-  box-shadow: 0 0 0 3px rgba(189, 123, 52, 0.15);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
 }
 
 button {
   cursor: pointer;
+}
+
+.tabular-nums-feature {
+  font-feature-settings: "tnum" 1;
+  font-variant-numeric: tabular-nums;
 }
