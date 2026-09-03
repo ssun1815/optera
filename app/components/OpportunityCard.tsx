@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { toggleSaveOpportunity } from '@/app/dashboard/save-actions'
-import { urgencyBadge } from '@/app/lib/opportunity-priority'
+import { priorityLabel, urgencyBadge } from '@/app/lib/opportunity-priority'
 
 type Opportunity = {
   id: string
@@ -14,13 +14,6 @@ type Opportunity = {
   recommended_action: string | null
   reason_for_relevance: string | null
   date_discovered: string | null
-}
-
-function priorityLabel(score: number | null) {
-  if (score === null) return null
-  if (score >= 9) return { label: 'HIGH PRIORITY', className: 'bg-[var(--color-amber)] text-white' }
-  if (score >= 7) return { label: 'STRONG OPPORTUNITY', className: 'bg-[var(--color-navy-700)] text-white' }
-  return { label: 'POSSIBLE OPPORTUNITY', className: 'bg-slate-500 text-white' }
 }
 
 function daysAgo(dateStr: string | null) {

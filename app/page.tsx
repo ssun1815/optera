@@ -1,7 +1,18 @@
 import Link from 'next/link'
 import { Header } from '@/app/components/Header'
+import { createAdminClient } from '@/app/lib/supabase/admin'
+import { priorityLabel } from '@/app/lib/opportunity-priority'
 
-export default function Home() {
+export default async function Home() {
+  const supabase = createAdminClient()
+  const { data: previewData } = await supabase
+    .from('opportunities')
+    .select('id, project_name, city, state, project_type, opportunity_score, reason_for_relevance, recommended_action')
+    .order('opportunity_score', { ascending: false })
+    .limit(2)
+
+  const livePreviewOpportunities = previewData ?? []
+
   const navRight = (
     <>
       <div className="hidden items-center gap-8 md:flex">
@@ -31,13 +42,6 @@ export default function Home() {
       </div>
     </>
   )
-
-  const stats = [
-    { value: "24", label: "Verified Opportunities" },
-    { value: "15", label: "DFW Cities Covered" },
-    { value: "Daily", label: "Automated Research" },
-    { value: "100%", label: "Human-Reviewed Before Publishing" },
-  ]
 
   const previewOpportunities = [
     { name: "Circle T Data Center", location: "Westlake, TX", type: "Data Center", score: "9/10", stage: "Site plans approved" },
@@ -152,7 +156,7 @@ export default function Home() {
       <Header right={navRight} />
 
       <section className="relative overflow-hidden bg-[var(--color-navy-950)] bg-[radial-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:24px_24px]">
-        <div className="relative mx-auto grid max-w-6xl gap-12 px-6 py-20 md:grid-cols-2 md:items-center md:py-28">
+        <div className="relative mx-auto grid max-w-6xl gap-12 px-6 pt-20 pb-24 md:grid-cols-2 md:items-center md:pt-28 md:pb-28">
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-amber-light)]">
               Dallas-Fort Worth · Commercial HVAC
@@ -216,61 +220,164 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        <div className="relative border-t border-white/10 py-8">
-          <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-6 md:grid-cols-4">
-            {stats.map((stat, i) => (
-              <div key={stat.label} className={`pl-4 md:border-l md:border-white/10 ${i === 0 ? 'md:border-l-0 md:pl-0' : ''}`}>
-                <p className="tabular-nums-feature text-2xl font-semibold text-[var(--color-off-white)]">{stat.value}</p>
-                <p className="mt-1 text-xs uppercase tracking-wide text-[var(--color-off-white)]/50">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
       </section>
 
       <section id="how-it-works" className="mx-auto max-w-6xl px-6 py-16">
         <h2 className="text-2xl font-semibold text-[var(--color-navy-900)]">
           How Optrace works
         </h2>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <div className="relative mt-10 grid gap-6 md:grid-cols-3">
+          <div
+            className="pointer-events-none absolute inset-x-0 top-10 hidden h-px bg-[var(--color-border)] md:block"
+            aria-hidden="true"
+          />
           {[
             {
-              step: "01",
               title: "Detect",
               body: "We monitor construction news, development announcements, and public project information across DFW every day.",
-              chip: "Source: Bisnow · Aug 2026",
+              icon: (
+                <>
+                  <circle cx="10" cy="10" r="6" />
+                  <line x1="14.5" y1="14.5" x2="20" y2="20" />
+                </>
+              ),
             },
             {
-              step: "02",
               title: "Verify and score",
               body: "Every opportunity is checked against credible public sources and scored 1 to 10 for HVAC relevance.",
-              chip: "Opportunity Score: 9/10",
+              icon: (
+                <>
+                  <circle cx="12" cy="12" r="8" />
+                  <polyline points="8.5 12.5 11 15 16 9" />
+                </>
+              ),
             },
             {
-              step: "03",
               title: "Deliver",
               body: "Curated, verified opportunities land in your dashboard - no noise, no manual searching.",
-              chip: "Added to Dashboard",
+              icon: (
+                <>
+                  <polyline points="4 14 4 19 20 19 20 14" />
+                  <line x1="12" y1="4" x2="12" y2="14" />
+                  <polyline points="8 10 12 14 16 10" />
+                </>
+              ),
             },
           ].map((item) => (
-            <div key={item.step} className="rounded-md border border-[var(--color-border)] bg-white p-6">
-              <p className="text-4xl font-semibold text-slate-200">
-                {item.step}
-              </p>
+            <div key={item.title} className="relative rounded-md border border-[var(--color-border)] bg-white p-6">
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded border border-blue-100 bg-blue-50 text-[var(--color-amber)]">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  {item.icon}
+                </svg>
+              </div>
               <h3 className="mt-2 text-lg font-medium text-[var(--color-navy-900)]">
                 {item.title}
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-[var(--color-slate-700)]">
                 {item.body}
               </p>
-              <div className="tabular-nums-feature mt-4 inline-block rounded bg-slate-100 px-2.5 py-1 text-xs font-medium text-[var(--color-slate-700)]">
-                {item.chip}
-              </div>
             </div>
           ))}
         </div>
       </section>
+
+      {livePreviewOpportunities.length > 0 && (
+        <section className="bg-white pt-16 pb-24">
+          <div className="mx-auto max-w-6xl px-6">
+            <h2 className="text-2xl font-semibold text-[var(--color-navy-900)]">
+              Real opportunities, right now
+            </h2>
+            <p className="mt-2 max-w-lg text-base text-[var(--color-slate-500)]">
+              These are live opportunities pulled from the Optrace database today - not
+              examples. Subscribers get the full, continuously updated list.
+            </p>
+
+            <div className="relative mt-10 overflow-hidden">
+              <div className="grid gap-5 md:grid-cols-2">
+                {livePreviewOpportunities.map((opp) => {
+                  const priority = priorityLabel(opp.opportunity_score)
+                  return (
+                    <div
+                      key={opp.id}
+                      className="flex h-full flex-col rounded-md border border-[var(--color-border)] bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.05)]"
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          {priority && (
+                            <span className={`inline-block rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${priority.className}`}>
+                              {priority.label}
+                            </span>
+                          )}
+                          <h3 className="mt-2 text-lg font-medium text-[var(--color-navy-900)]">
+                            {opp.project_name}
+                          </h3>
+                          <p className="mt-1 text-sm text-[var(--color-slate-500)]">
+                            {opp.city}, {opp.state} · {opp.project_type}
+                          </p>
+                        </div>
+                        <div className="flex-shrink-0 rounded border border-[var(--color-border)] bg-slate-50 px-2.5 py-1.5 text-center">
+                          <div className="tabular-nums-feature text-base font-semibold leading-none text-[var(--color-ink)]">
+                            {opp.opportunity_score}
+                          </div>
+                          <div className="mt-0.5 text-[9px] uppercase tracking-wide text-[var(--color-slate-500)]">/10</div>
+                        </div>
+                      </div>
+                      <p className="mt-3 text-sm leading-relaxed text-[var(--color-slate-700)]">
+                        {opp.reason_for_relevance}
+                      </p>
+                      {opp.recommended_action && (
+                        <div className="mt-auto border-t border-[var(--color-border)] pt-4">
+                          <span className="text-xs font-medium uppercase tracking-wide text-[var(--color-slate-500)]">
+                            Recommended action
+                          </span>
+                          <p className="mt-1 text-sm text-[var(--color-slate-700)]">
+                            {opp.recommended_action}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+
+                <div
+                  className="hidden rounded-md border border-[var(--color-border)] bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.05)] md:block"
+                  aria-hidden="true"
+                >
+                  <div className="h-4 w-24 rounded bg-slate-100" />
+                  <div className="mt-3 h-5 w-2/3 rounded bg-slate-100" />
+                  <div className="mt-2 h-4 w-1/2 rounded bg-slate-100" />
+                </div>
+                <div
+                  className="hidden rounded-md border border-[var(--color-border)] bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.05)] md:block"
+                  aria-hidden="true"
+                >
+                  <div className="h-4 w-24 rounded bg-slate-100" />
+                  <div className="mt-3 h-5 w-2/3 rounded bg-slate-100" />
+                  <div className="mt-2 h-4 w-1/2 rounded bg-slate-100" />
+                </div>
+              </div>
+
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white to-transparent"
+                aria-hidden="true"
+              />
+            </div>
+
+            <div className="mt-4 flex flex-col items-center text-center">
+              <Link
+                href="/signup"
+                className="rounded-md bg-[var(--color-amber)] px-6 py-3 text-sm font-medium text-white transition hover:bg-[var(--color-amber-light)]"
+              >
+                Subscribe to see all opportunities
+              </Link>
+              <p className="mt-4 max-w-md text-xs text-[var(--color-slate-500)]">
+                Optrace is an independent research service. It is not affiliated with,
+                endorsed by, or sponsored by the companies or projects named above.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section id="what-we-track" className="bg-[var(--color-off-white-alt)] py-24">
         <div className="mx-auto max-w-6xl px-6">

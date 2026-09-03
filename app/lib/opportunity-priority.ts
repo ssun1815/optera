@@ -20,3 +20,10 @@ export function urgencyBadge(action: string | null): { label: string; className:
   }
   return map[action] ?? null
 }
+
+export function priorityLabel(score: number | null): { label: string; className: string } | null {
+  if (score === null) return null
+  if (score >= 9) return { label: 'HIGH PRIORITY', className: 'bg-[var(--color-amber)] text-white' }
+  if (score >= 7) return { label: 'STRONG OPPORTUNITY', className: 'bg-[var(--color-navy-700)] text-white' }
+  return { label: 'POSSIBLE OPPORTUNITY', className: 'bg-slate-500 text-white' }
+}
