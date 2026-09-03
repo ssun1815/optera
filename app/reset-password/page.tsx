@@ -1,5 +1,9 @@
 import { Header } from '@/app/components/Header'
+import { PasswordInput } from '@/app/components/PasswordInput'
 import { updatePassword } from './actions'
+
+const PASSWORD_PATTERN = '(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}'
+const PASSWORD_TITLE = 'Must be at least 8 characters, with at least one uppercase letter and one special character.'
 
 export default async function ResetPasswordPage({
   searchParams,
@@ -23,25 +27,31 @@ export default async function ResetPasswordPage({
           <form action={updatePassword} className="mt-6 space-y-4">
             <div>
               <label htmlFor="password" className="text-sm text-[var(--color-ink)]">New password</label>
-              <input
+              <PasswordInput
                 id="password"
                 name="password"
-                type="password"
                 required
-                minLength={6}
+                pattern={PASSWORD_PATTERN}
+                title={PASSWORD_TITLE}
                 className="mt-1 w-full rounded-md border border-[var(--color-navy-900)]/20 px-3 py-2 text-sm"
               />
+              <p className="mt-1 text-xs text-[var(--color-ink)]/50">
+                At least 8 characters, with one uppercase letter and one special character.
+              </p>
             </div>
             <div>
               <label htmlFor="confirmPassword" className="text-sm text-[var(--color-ink)]">Confirm new password</label>
-              <input
+              <PasswordInput
                 id="confirmPassword"
                 name="confirmPassword"
-                type="password"
                 required
-                minLength={6}
+                pattern={PASSWORD_PATTERN}
+                title={PASSWORD_TITLE}
                 className="mt-1 w-full rounded-md border border-[var(--color-navy-900)]/20 px-3 py-2 text-sm"
               />
+              <p className="mt-1 text-xs text-[var(--color-ink)]/50">
+                At least 8 characters, with one uppercase letter and one special character.
+              </p>
             </div>
             <button
               type="submit"

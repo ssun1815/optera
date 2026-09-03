@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Header } from '@/app/components/Header'
+import { PasswordInput } from '@/app/components/PasswordInput'
 import { login } from './actions'
 
 export default async function LoginPage({
@@ -48,10 +49,9 @@ export default async function LoginPage({
                     Forgot password?
                   </Link>
                 </div>
-                <input
+                <PasswordInput
                   id="password"
                   name="password"
-                  type="password"
                   required
                   className="mt-1 w-full rounded-md border border-[var(--color-border)] px-3 py-2 text-sm"
                 />
