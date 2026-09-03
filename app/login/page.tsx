@@ -16,7 +16,7 @@ export default async function LoginPage({
           <Link href="/" className="mb-6 inline-block text-sm text-[var(--color-ink)]/60 hover:text-[var(--color-ink)]">
             &larr; Back to home
           </Link>
-          <div className="rounded-lg bg-white p-8 shadow-sm">
+          <div className="rounded-md border border-[var(--color-border)] bg-white p-8 shadow-[0_1px_3px_rgba(15,23,42,0.06)]">
             <h1 className="text-2xl font-medium text-[var(--color-navy-900)]">Log in</h1>
 
             {params.error === 'confirm' && (
@@ -38,17 +38,22 @@ export default async function LoginPage({
                   name="email"
                   type="email"
                   required
-                  className="mt-1 w-full rounded-md border border-[var(--color-navy-900)]/20 px-3 py-2 text-sm"
+                  className="mt-1 w-full rounded-md border border-[var(--color-border)] px-3 py-2 text-sm"
                 />
               </div>
               <div>
-                <label htmlFor="password" className="text-sm text-[var(--color-ink)]">Password</label>
+                <div className="flex items-center justify-between">
+                  <label htmlFor="password" className="text-sm text-[var(--color-ink)]">Password</label>
+                  <Link href="/forgot-password" className="text-xs text-[var(--color-ink)]/60 underline hover:text-[var(--color-ink)]">
+                    Forgot password?
+                  </Link>
+                </div>
                 <input
                   id="password"
                   name="password"
                   type="password"
                   required
-                  className="mt-1 w-full rounded-md border border-[var(--color-navy-900)]/20 px-3 py-2 text-sm"
+                  className="mt-1 w-full rounded-md border border-[var(--color-border)] px-3 py-2 text-sm"
                 />
               </div>
               <button
