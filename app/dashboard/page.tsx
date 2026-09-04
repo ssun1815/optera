@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { logout, createCheckoutSession } from './actions'
 import { Header } from '@/app/components/Header'
 import { OpportunityCard } from '@/app/components/OpportunityCard'
+import { OpportunityTable } from '@/app/components/OpportunityTable'
 import { FloatingAssistantButton } from '@/app/components/FloatingAssistantButton'
 import { actionPriorityRank } from '@/app/lib/opportunity-priority'
 import Link from 'next/link'
@@ -18,6 +19,7 @@ export default async function DashboardPage({
     city?: string
     minScore?: string
     highPriorityOnly?: string
+    view?: string
   }>
 }) {
   const supabase = await createClient()
@@ -124,6 +126,18 @@ export default async function DashboardPage({
   const city = params.city ?? ''
   const highPriorityOnly = params.highPriorityOnly === 'true'
   const minScore = highPriorityOnly ? '9' : (params.minScore ?? '')
+  const view = params.view === 'table' ? 'table' : 'card'
+
+  function dashboardHref(viewOverride: 'card' | 'table') {
+    const sp = new URLSearchParams()
+    if (category) sp.set('category', category)
+    if (city) sp.set('city', city)
+    if (params.minScore) sp.set('minScore', params.minScore)
+    if (highPriorityOnly) sp.set('highPriorityOnly', 'true')
+    if (viewOverride === 'table') sp.set('view', 'table')
+    const qs = sp.toString()
+    return qs ? `/dashboard?${qs}` : '/dashboard'
+  }
 
   const { data: cityRows } = await supabase.from('opportunities').select('city')
   const cities = Array.from(new Set(cityRows?.map((r) => r.city).filter(Boolean))).sort()
@@ -173,9 +187,34 @@ export default async function DashboardPage({
           )}
 
           <section className="mt-12">
-            <h2 className="text-lg font-medium text-[var(--color-navy-900)]">Explore Opportunities</h2>
+            <div className="flex items-center justify-between gap-4">
+              <h2 className="text-lg font-medium text-[var(--color-navy-900)]">Explore Opportunities</h2>
+              <div className="inline-flex flex-shrink-0 rounded-md border border-[var(--color-navy-900)]/20 bg-white p-0.5">
+                <Link
+                  href={dashboardHref('card')}
+                  className={`rounded px-3 py-1 text-sm font-medium transition ${
+                    view === 'card'
+                      ? 'bg-[var(--color-navy-900)] text-white'
+                      : 'text-[var(--color-ink)]/60 hover:text-[var(--color-ink)]'
+                  }`}
+                >
+                  Cards
+                </Link>
+                <Link
+                  href={dashboardHref('table')}
+                  className={`rounded px-3 py-1 text-sm font-medium transition ${
+                    view === 'table'
+                      ? 'bg-[var(--color-navy-900)] text-white'
+                      : 'text-[var(--color-ink)]/60 hover:text-[var(--color-ink)]'
+                  }`}
+                >
+                  Table
+                </Link>
+              </div>
+            </div>
 
             <form method="GET" className="mt-4 flex flex-wrap items-end gap-4 rounded-lg border border-[var(--color-navy-900)]/10 bg-white p-4">
+              {view === 'table' && <input type="hidden" name="view" value="table" />}
               <div>
                 <label htmlFor="category" className="block text-xs text-[var(--color-ink)]/60">Category</label>
                 <select id="category" name="category" defaultValue={category} className="mt-1 rounded-md border border-[var(--color-navy-900)]/20 px-2 py-1.5 text-sm">
@@ -235,11 +274,17 @@ export default async function DashboardPage({
               </p>
             )}
 
-            <div className="mt-6 space-y-4">
-              {opportunities?.map((opp) => (
-                <OpportunityCard key={opp.id} opp={opp} isSaved={savedIds.has(opp.id)} />
-              ))}
-            </div>
+            {view === 'table' ? (
+              <div className="mt-6">
+                <OpportunityTable opportunities={opportunities ?? []} savedIds={savedIds} />
+              </div>
+            ) : (
+              <div className="mt-6 space-y-4">
+                {opportunities?.map((opp) => (
+                  <OpportunityCard key={opp.id} opp={opp} isSaved={savedIds.has(opp.id)} />
+                ))}
+              </div>
+            )}
           </section>
         </div>
       </main>
