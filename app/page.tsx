@@ -1,23 +1,58 @@
 import Link from 'next/link'
 import { Header } from '@/app/components/Header'
 import { createAdminClient } from '@/app/lib/supabase/admin'
-import { priorityLabel } from '@/app/lib/opportunity-priority'
+
+const STAGES = [
+  { key: 'announced', label: 'ANNOUNCED' },
+  { key: 'planning', label: 'PLANNING' },
+  { key: 'design', label: 'DESIGN' },
+  { key: 'permitting', label: 'PERMITTING' },
+  { key: 'construction', label: 'CONSTRUCTION' },
+  { key: 'completed', label: 'COMPLETED' },
+]
+
+// Mirrors the detail page's local priority badge exactly (app/dashboard/opportunities/[id]/page.tsx),
+// not the shared chip from app/lib/opportunity-priority.ts — this section reuses that page's look verbatim.
+function recordPriorityLabel(score: number | null) {
+  if (score === null) return null
+  if (score >= 9) return { label: 'HIGH PRIORITY', color: 'bg-[var(--color-amber)]' }
+  if (score >= 7) return { label: 'STRONG OPPORTUNITY', color: 'bg-[var(--color-navy-700)]' }
+  return { label: 'POSSIBLE OPPORTUNITY', color: 'bg-[var(--color-ink)]/40' }
+}
+
+function truncate(text: string, max: number) {
+  if (text.length <= max) return text
+  return `${text.slice(0, max).trimEnd()}…`
+}
 
 export default async function Home() {
   const supabase = createAdminClient()
-  const { data: previewData } = await supabase
+  const { data: topOpportunities } = await supabase
     .from('opportunities')
-    .select('id, project_name, city, state, project_type, opportunity_score, reason_for_relevance, recommended_action')
+    .select('*')
     .order('opportunity_score', { ascending: false })
-    .limit(2)
+    .limit(3)
 
-  const livePreviewOpportunities = previewData ?? []
+  const heroPreview = topOpportunities ?? []
+  const featured = topOpportunities?.[0] ?? null
+
+  const { data: organisations } = featured
+    ? await supabase
+        .from('opportunity_organisations')
+        .select('*')
+        .eq('opportunity_id', featured.id)
+        .order('investigation_priority', { ascending: true })
+    : { data: null }
+
+  const featuredPriority = featured ? recordPriorityLabel(featured.opportunity_score) : null
+  const featuredStageIndex = featured ? STAGES.findIndex((s) => s.key === featured.lifecycle_stage) : -1
+  const orgNames = (organisations ?? []).slice(0, 2).map((o) => o.company_name).filter(Boolean)
 
   const navRight = (
     <>
       <div className="hidden items-center gap-8 md:flex">
-        <a href="#how-it-works" className="text-sm text-[var(--color-off-white)]/80 hover:text-[var(--color-off-white)]">
-          How it works
+        <a href="#see-it-in-action" className="text-sm text-[var(--color-off-white)]/80 hover:text-[var(--color-off-white)]">
+          See it in action
         </a>
         <a href="#what-we-track" className="text-sm text-[var(--color-off-white)]/80 hover:text-[var(--color-off-white)]">
           What we track
@@ -42,12 +77,6 @@ export default async function Home() {
       </div>
     </>
   )
-
-  const previewOpportunities = [
-    { name: "Circle T Data Center", location: "Westlake, TX", type: "Data Center", score: "9/10", stage: "Site plans approved" },
-    { name: "ACS Group Fort Worth Campus", location: "Fort Worth, TX", type: "Data Center", score: "9/10", stage: "Under construction" },
-    { name: "IAC Pleasant Run", location: "Lancaster, TX", type: "Warehouse", score: "7/10", stage: "Under construction" },
-  ]
 
   const trackItems = [
     {
@@ -132,6 +161,93 @@ export default async function Home() {
     },
   ]
 
+  const intelligenceFeatures = featured
+    ? [
+        {
+          title: "Opportunity Scoring",
+          body: "Every opportunity receives a score from 1-10 based on facility type, scale, project stage, timing, and source credibility.",
+          icon: (
+            <>
+              <path d="M4 18a8 8 0 1 1 16 0" />
+              <line x1="12" y1="18" x2="16" y2="13" />
+            </>
+          ),
+          example: (
+            <span className="tabular-nums-feature inline-block rounded bg-slate-100 px-2.5 py-1 text-xs font-semibold text-[var(--color-ink)]">
+              {featured.opportunity_score}/10
+            </span>
+          ),
+        },
+        {
+          title: "Why It Matters",
+          body: "Optrace explains, in plain language, why a specific project is relevant to a commercial HVAC contractor.",
+          icon: (
+            <>
+              <path d="M4 5h16v10H10l-4 4v-4H4V5Z" />
+            </>
+          ),
+          example: featured.reason_for_relevance ? (
+            <p className="text-xs italic leading-relaxed text-[var(--color-slate-700)]">
+              &ldquo;{truncate(featured.reason_for_relevance, 110)}&rdquo;
+            </p>
+          ) : null,
+        },
+        {
+          title: "Project Timing",
+          body: "Every opportunity is placed on a lifecycle: Announced, Planning, Design, Permitting, Construction.",
+          icon: (
+            <>
+              <circle cx="12" cy="12" r="8" />
+              <polyline points="12 7 12 12 16 14" />
+            </>
+          ),
+          example: (
+            <div className="flex items-center gap-1">
+              {STAGES.slice(0, -1).map((stage, i) => (
+                <span
+                  key={stage.key}
+                  className={`h-1.5 flex-1 rounded-full ${i <= featuredStageIndex ? 'bg-[var(--color-amber)]' : 'bg-slate-200'}`}
+                />
+              ))}
+            </div>
+          ),
+        },
+        {
+          title: "Project Team Intelligence",
+          body: "Where publicly available, Optrace identifies the developer, general contractor, and engineering firms involved.",
+          icon: (
+            <>
+              <circle cx="8" cy="9" r="3" />
+              <path d="M2.5 19c0-3 2.5-5.5 5.5-5.5s5.5 2.5 5.5 5.5" />
+              <circle cx="17" cy="9" r="2.3" />
+              <path d="M14.5 13.8c2.5.3 4.5 2.5 4.5 5.2" />
+            </>
+          ),
+          example:
+            orgNames.length > 0 ? (
+              <p className="text-xs font-medium text-[var(--color-slate-700)]">{orgNames.join(' · ')}</p>
+            ) : (
+              <p className="text-xs text-[var(--color-slate-500)]">Not yet publicly identified.</p>
+            ),
+        },
+        {
+          title: "Recommended Action",
+          body: "Optrace recommends what to do next: investigate now, research the project team, identify key organisations, or monitor.",
+          icon: (
+            <>
+              <line x1="5" y1="21" x2="5" y2="4" />
+              <path d="M5 5h13l-3 4 3 4H5" />
+            </>
+          ),
+          example: featured.recommended_action ? (
+            <span className="inline-block rounded bg-[var(--color-navy-900)] px-2.5 py-1 text-xs font-medium text-white">
+              {featured.recommended_action}
+            </span>
+          ) : null,
+        },
+      ]
+    : []
+
   const faqs = [
     {
       q: "Why is the first month different?",
@@ -159,16 +275,15 @@ export default async function Home() {
         <div className="relative mx-auto grid max-w-6xl gap-12 px-6 pt-20 pb-24 md:grid-cols-2 md:items-center md:pt-28 md:pb-28">
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-amber-light)]">
-              Dallas-Fort Worth · Commercial HVAC
+              Commercial Opportunity Intelligence · Dallas-Fort Worth
             </p>
             <h1 className="mt-4 font-[family-name:var(--font-serif)] text-4xl italic leading-tight text-[var(--color-off-white)] md:text-5xl">
-              Find commercial opportunities before your competitors.
+              Know which commercial projects are actually worth pursuing.
             </h1>
             <p className="mt-6 max-w-md text-base leading-relaxed text-[var(--color-off-white)]/70">
-              Optrace tracks new commercial and industrial developments across
-              DFW - warehouses, distribution centers, data centers, hotels,
-              and more - and turns public signals into a curated list of HVAC
-              opportunities worth your time.
+              Optrace doesn&apos;t just find construction projects in DFW - it scores every
+              opportunity, explains why it matters to a commercial HVAC contractor, and tells
+              you what to investigate next.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
@@ -178,10 +293,10 @@ export default async function Home() {
                 Start your first month - $99
               </Link>
               <a
-                href="#how-it-works"
+                href="#see-it-in-action"
                 className="rounded-md border border-[var(--color-off-white)]/20 px-6 py-3 text-sm font-medium text-[var(--color-off-white)] transition hover:border-[var(--color-off-white)]/40"
               >
-                See how it works
+                See it in action
               </a>
             </div>
           </div>
@@ -203,17 +318,22 @@ export default async function Home() {
               </div>
 
               <div className="divide-y divide-[var(--color-border)]">
-                {previewOpportunities.map((opp) => (
-                  <div key={opp.name} className="p-4">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium text-[var(--color-ink)]">{opp.name}</p>
-                      <span className="tabular-nums-feature rounded bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-[var(--color-ink)]">
-                        {opp.score}
+                {heroPreview.map((opp) => (
+                  <div key={opp.id} className="p-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-sm font-medium text-[var(--color-ink)]">{opp.project_name}</p>
+                      <span className="tabular-nums-feature flex-shrink-0 rounded bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-[var(--color-ink)]">
+                        {opp.opportunity_score}/10
                       </span>
                     </div>
                     <p className="mt-1 text-xs text-[var(--color-slate-500)]">
-                      {opp.location} · {opp.type} · {opp.stage}
+                      {opp.city}, {opp.state} · {opp.project_type} · {opp.project_stage}
                     </p>
+                    {opp.reason_for_relevance && (
+                      <p className="mt-1.5 text-xs italic leading-relaxed text-[var(--color-slate-500)]">
+                        &ldquo;{truncate(opp.reason_for_relevance, 90)}&rdquo;
+                      </p>
+                    )}
                   </div>
                 ))}
               </div>
@@ -222,158 +342,379 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="how-it-works" className="mx-auto max-w-6xl px-6 py-16">
-        <h2 className="text-2xl font-semibold text-[var(--color-navy-900)]">
-          How Optrace works
-        </h2>
-        <div className="relative mt-10 grid gap-6 md:grid-cols-3">
-          <div
-            className="pointer-events-none absolute inset-x-0 top-10 hidden h-px bg-[var(--color-border)] md:block"
-            aria-hidden="true"
-          />
-          {[
-            {
-              title: "Detect",
-              body: "We monitor construction news, development announcements, and public project information across DFW every day.",
-              icon: (
-                <>
-                  <circle cx="10" cy="10" r="6" />
-                  <line x1="14.5" y1="14.5" x2="20" y2="20" />
-                </>
-              ),
-            },
-            {
-              title: "Verify and score",
-              body: "Every opportunity is checked against credible public sources and scored 1 to 10 for HVAC relevance.",
-              icon: (
-                <>
-                  <circle cx="12" cy="12" r="8" />
-                  <polyline points="8.5 12.5 11 15 16 9" />
-                </>
-              ),
-            },
-            {
-              title: "Deliver",
-              body: "Curated, verified opportunities land in your dashboard - no noise, no manual searching.",
-              icon: (
-                <>
-                  <polyline points="4 14 4 19 20 19 20 14" />
-                  <line x1="12" y1="4" x2="12" y2="14" />
-                  <polyline points="8 10 12 14 16 10" />
-                </>
-              ),
-            },
-          ].map((item) => (
-            <div key={item.title} className="relative rounded-md border border-[var(--color-border)] bg-white p-6">
-              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded border border-blue-100 bg-blue-50 text-[var(--color-amber)]">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  {item.icon}
-                </svg>
-              </div>
-              <h3 className="mt-2 text-lg font-medium text-[var(--color-navy-900)]">
-                {item.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--color-slate-700)]">
-                {item.body}
+      {featured && (
+        <section id="see-it-in-action" className="bg-[var(--color-off-white-alt)] py-24">
+          <div className="mx-auto max-w-3xl px-6">
+            <div className="text-center">
+              <p className="text-xs font-semibold uppercase tracking-widest text-[var(--color-amber)]">
+                See Optrace in Action
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold text-[var(--color-navy-900)] md:text-3xl">
+                This is what you actually get.
+              </h2>
+              <p className="mx-auto mt-3 max-w-xl text-base text-[var(--color-slate-500)]">
+                Not a project listing. A complete intelligence record - built from public
+                information, verified, scored, and interpreted specifically for HVAC relevance.
               </p>
             </div>
-          ))}
+
+            <div className="mt-10">
+              {/* TOP SECTION - reused from app/dashboard/opportunities/[id]/page.tsx, Save button omitted */}
+              <div className="rounded-lg bg-white p-6 shadow-sm">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    {featuredPriority && (
+                      <span className={`inline-block rounded px-2 py-0.5 font-[family-name:var(--font-mono)] text-[10px] tracking-wider text-white ${featuredPriority.color}`}>
+                        {featuredPriority.label}
+                      </span>
+                    )}
+                    <h3 className="mt-2 text-2xl font-medium text-[var(--color-navy-900)]">
+                      {featured.project_name}
+                    </h3>
+                    <p className="mt-1 text-sm text-[var(--color-ink)]/60">
+                      {featured.location}
+                    </p>
+                    <p className="mt-1 text-sm text-[var(--color-ink)]/60">
+                      {featured.project_type} · {featured.project_stage}
+                    </p>
+                  </div>
+                  <div className="flex h-16 w-16 flex-shrink-0 flex-col items-center justify-center rounded-full bg-[var(--color-navy-950)] font-[family-name:var(--font-mono)] text-[var(--color-amber-light)]">
+                    <span className="text-lg leading-none">{featured.opportunity_score}</span>
+                    <span className="text-[9px] leading-none text-[var(--color-off-white)]/50">/10</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* WHY OPTRACE FLAGGED THIS */}
+              <section className="mt-6 rounded-lg border border-[var(--color-navy-900)]/10 bg-white p-6">
+                <h3 className="text-sm font-medium uppercase tracking-wide text-[var(--color-amber)]">
+                  Why Optrace Flagged This
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--color-ink)]">
+                  {featured.reason_for_relevance}
+                </p>
+              </section>
+
+              {/* RECOMMENDED ACTION */}
+              {featured.recommended_action && (
+                <section className="mt-6 rounded-lg border border-[var(--color-navy-900)]/10 bg-white p-6">
+                  <h3 className="text-sm font-medium uppercase tracking-wide text-[var(--color-ink)]/50">
+                    Recommended Action
+                  </h3>
+                  <p className="mt-2 text-lg font-medium text-[var(--color-navy-900)]">
+                    {featured.recommended_action}
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-[var(--color-ink)]/80">
+                    {featured.recommended_action_reason}
+                  </p>
+                </section>
+              )}
+
+              {/* PROJECT TIMELINE */}
+              <section className="mt-6 rounded-lg border border-[var(--color-navy-900)]/10 bg-white p-6">
+                <h3 className="text-sm font-medium uppercase tracking-wide text-[var(--color-ink)]/50">
+                  Project Timeline
+                </h3>
+                {featuredStageIndex >= 0 ? (
+                  <>
+                    <div className="mt-6 flex items-center">
+                      {STAGES.map((stage, i) => (
+                        <div key={stage.key} className="flex flex-1 items-center last:flex-none">
+                          <div className="flex flex-col items-center">
+                            <div
+                              className={`h-3 w-3 rounded-full ${
+                                i <= featuredStageIndex ? 'bg-[var(--color-amber)]' : 'bg-[var(--color-navy-900)]/15'
+                              }`}
+                            />
+                            <span
+                              className={`mt-2 text-center font-[family-name:var(--font-mono)] text-[9px] tracking-wide ${
+                                i === featuredStageIndex ? 'font-bold text-[var(--color-navy-900)]' : 'text-[var(--color-ink)]/40'
+                              }`}
+                            >
+                              {stage.label}
+                            </span>
+                            {i === featuredStageIndex && (
+                              <span className="mt-1 rounded bg-[var(--color-navy-950)] px-1.5 py-0.5 text-[8px] text-[var(--color-amber-light)]">
+                                YOU ARE HERE
+                              </span>
+                            )}
+                          </div>
+                          {i < STAGES.length - 1 && (
+                            <div className={`h-px flex-1 ${i < featuredStageIndex ? 'bg-[var(--color-amber)]' : 'bg-[var(--color-navy-900)]/15'}`} />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    {featured.timing_assessment && (
+                      <div className="mt-8 border-t border-[var(--color-navy-900)]/10 pt-4">
+                        <p className="text-sm font-medium text-[var(--color-navy-900)]">
+                          Optrace Timing Assessment: {featured.timing_assessment}
+                        </p>
+                        <p className="mt-1 text-sm leading-relaxed text-[var(--color-ink)]/70">
+                          {featured.timing_assessment_reason}
+                        </p>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <p className="mt-3 text-sm text-[var(--color-ink)]/60">
+                    Not enough information is currently available to place this project on the lifecycle timeline.
+                  </p>
+                )}
+              </section>
+
+              {/* ORGANISATIONS INVOLVED */}
+              <section className="mt-6 rounded-lg border border-[var(--color-navy-900)]/10 bg-white p-6">
+                <h3 className="text-sm font-medium uppercase tracking-wide text-[var(--color-ink)]/50">
+                  Organisations Involved
+                </h3>
+                {organisations && organisations.length > 0 ? (
+                  <ul className="mt-4 space-y-3">
+                    {organisations.map((org) => (
+                      <li key={org.id} className="border-b border-[var(--color-navy-900)]/5 pb-3 last:border-0">
+                        <p className="text-sm font-medium text-[var(--color-navy-900)]">
+                          {org.company_name} <span className="font-normal text-[var(--color-ink)]/50">— {org.role}</span>
+                        </p>
+                        {org.source_note && (
+                          <p className="mt-0.5 text-xs text-[var(--color-ink)]/50">{org.source_note}</p>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-3 text-sm text-[var(--color-ink)]/60">Not yet publicly identified.</p>
+                )}
+              </section>
+
+              {/* WHO TO APPROACH */}
+              {organisations && organisations.length > 0 && (
+                <section className="mt-6 rounded-lg border border-[var(--color-navy-900)]/10 bg-white p-6">
+                  <h3 className="text-sm font-medium uppercase tracking-wide text-[var(--color-amber)]">
+                    Optrace Recommendation: Who to Approach
+                  </h3>
+                  <ol className="mt-4 space-y-4">
+                    {organisations.map((org, i) => (
+                      <li key={org.id} className="flex gap-3">
+                        <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-navy-950)] font-[family-name:var(--font-mono)] text-xs text-[var(--color-amber-light)]">
+                          {i + 1}
+                        </span>
+                        <div>
+                          <p className="text-sm font-medium text-[var(--color-navy-900)]">
+                            {org.role} — {org.company_name}
+                          </p>
+                          <p className="mt-0.5 text-sm text-[var(--color-ink)]/70">{org.investigation_reason}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                  <p className="mt-4 text-xs italic text-[var(--color-ink)]/40">
+                    These rankings are Optrace&apos;s analysis based on available information and do not
+                    guarantee that contacting any organisation will result in a contract.
+                  </p>
+                </section>
+              )}
+
+              {/* SOURCE */}
+              <section className="mt-6 rounded-lg border border-[var(--color-navy-900)]/10 bg-white p-6">
+                <h3 className="text-sm font-medium uppercase tracking-wide text-[var(--color-ink)]/50">
+                  Source
+                </h3>
+                <dl className="mt-4 grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <dt className="text-[var(--color-ink)]/50">Source</dt>
+                    <dd className="mt-0.5 text-[var(--color-ink)]">{featured.source_name}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-[var(--color-ink)]/50">Source Date</dt>
+                    <dd className="mt-0.5 text-[var(--color-ink)]">{featured.source_date || 'Not publicly available'}</dd>
+                  </div>
+                  <div className="col-span-2">
+                    <dt className="text-[var(--color-ink)]/50">Source URL</dt>
+                    <dd className="mt-0.5">
+                      {featured.source_url ? (
+                        <a href={featured.source_url} target="_blank" rel="noopener noreferrer" className="break-all text-[var(--color-navy-900)] underline">
+                          {featured.source_url}
+                        </a>
+                      ) : (
+                        <span className="text-[var(--color-ink)]">Not publicly available</span>
+                      )}
+                    </dd>
+                  </div>
+                  <div className="col-span-2">
+                    <dt className="text-[var(--color-ink)]/50">Verification Status</dt>
+                    <dd className="mt-0.5 text-[var(--color-ink)]">{featured.verification_status}</dd>
+                  </div>
+                </dl>
+              </section>
+            </div>
+
+            <p className="mt-6 text-center text-xs italic text-[var(--color-slate-500)]">
+              This is a real, current opportunity in the Optrace database - not a mockup.
+            </p>
+          </div>
+        </section>
+      )}
+
+      <section className="bg-white py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <h2 className="text-2xl font-semibold text-[var(--color-navy-900)]">
+            What Optrace actually gives you
+          </h2>
+          <p className="mt-2 max-w-lg text-base text-[var(--color-slate-500)]">
+            The information exists publicly. Finding it, verifying it, and figuring out whether
+            it matters to your business is the part that takes hours.
+          </p>
+
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            <div className="rounded-md border border-[var(--color-border)] bg-[var(--color-off-white-alt)] p-6">
+              <h3 className="text-xs font-semibold uppercase tracking-widest text-[var(--color-slate-500)]">
+                Without Optrace
+              </h3>
+              <ol className="mt-4 space-y-3">
+                {[
+                  "Search dozens of sources",
+                  "Find a project that might be relevant",
+                  "Read multiple articles to understand it",
+                  "Work out if it's actually worth your time",
+                  "Research who's involved",
+                  "Decide who's worth contacting",
+                  "Decide whether to pursue it",
+                ].map((step, i) => (
+                  <li key={step} className="flex items-start gap-3 text-sm text-[var(--color-slate-500)]">
+                    <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-slate-200 text-[10px] font-semibold text-[var(--color-slate-700)]">
+                      {i + 1}
+                    </span>
+                    <span className="pt-0.5">{step}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div className="rounded-md border border-[var(--color-amber)]/20 bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
+              <h3 className="text-xs font-semibold uppercase tracking-widest text-[var(--color-amber)]">
+                With Optrace
+              </h3>
+              <ol className="mt-4 space-y-3">
+                {[
+                  "Relevant opportunity identified",
+                  "Scored for HVAC relevance",
+                  "Why it matters, explained",
+                  "Stage and timing assessed",
+                  "Organisations identified",
+                  "Recommended action provided",
+                  "Ready to review in your dashboard",
+                ].map((step, i) => (
+                  <li key={step} className="flex items-start gap-3 text-sm text-[var(--color-ink)]">
+                    <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-amber)] text-[10px] font-semibold text-white">
+                      {i + 1}
+                    </span>
+                    <span className="pt-0.5">{step}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
         </div>
       </section>
 
-      {livePreviewOpportunities.length > 0 && (
-        <section className="bg-white pt-16 pb-24">
+      <section className="bg-[var(--color-off-white-alt)] py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <h2 className="text-2xl font-semibold text-[var(--color-navy-900)]">
+            Optrace isn&apos;t another database.
+          </h2>
+          <p className="mt-2 max-w-lg text-base text-[var(--color-slate-500)]">
+            Databases give you information. Optrace interprets it.
+          </p>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {[
+              { before: "A database gives you names.", after: "Optrace gives you context." },
+              { before: "A database gives you projects.", after: "Optrace tells you which ones may be worth pursuing." },
+              { before: "A database gives you information.", after: "Optrace turns it into intelligence." },
+            ].map((item) => (
+              <div
+                key={item.before}
+                className="rounded-md border border-[var(--color-border)] bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.05)]"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded border border-slate-200 bg-slate-100 text-[var(--color-slate-500)]">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <ellipse cx="12" cy="5" rx="7" ry="2.5" />
+                      <path d="M5 5v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V5" />
+                      <path d="M5 11v6c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-6" />
+                    </svg>
+                  </div>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--color-slate-500)]">
+                    Database
+                  </span>
+                </div>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--color-slate-500)]">{item.before}</p>
+
+                <div className="my-4 flex items-center gap-2" aria-hidden="true">
+                  <span className="h-px flex-1 bg-[var(--color-border)]" />
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="flex-shrink-0 text-[var(--color-amber)]"
+                  >
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                  <span className="h-px flex-1 bg-[var(--color-border)]" />
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded border border-blue-100 bg-blue-50 text-[var(--color-amber)]">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </div>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[var(--color-amber)]">
+                    Optrace
+                  </span>
+                </div>
+                <p className="mt-3 text-sm font-semibold leading-relaxed text-[var(--color-amber)]">{item.after}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {intelligenceFeatures.length > 0 && (
+        <section className="bg-white py-24">
           <div className="mx-auto max-w-6xl px-6">
             <h2 className="text-2xl font-semibold text-[var(--color-navy-900)]">
-              Real opportunities, right now
+              Intelligence Features
             </h2>
             <p className="mt-2 max-w-lg text-base text-[var(--color-slate-500)]">
-              These are live opportunities pulled from the Optrace database today - not
-              examples. Subscribers get the full, continuously updated list.
+              Every example below is pulled live from the same real opportunity shown above.
             </p>
-
-            <div className="relative mt-10 overflow-hidden">
-              <div className="grid gap-5 md:grid-cols-2">
-                {livePreviewOpportunities.map((opp) => {
-                  const priority = priorityLabel(opp.opportunity_score)
-                  return (
-                    <div
-                      key={opp.id}
-                      className="flex h-full flex-col rounded-md border border-[var(--color-border)] bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.05)]"
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          {priority && (
-                            <span className={`inline-block rounded px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${priority.className}`}>
-                              {priority.label}
-                            </span>
-                          )}
-                          <h3 className="mt-2 text-lg font-medium text-[var(--color-navy-900)]">
-                            {opp.project_name}
-                          </h3>
-                          <p className="mt-1 text-sm text-[var(--color-slate-500)]">
-                            {opp.city}, {opp.state} · {opp.project_type}
-                          </p>
-                        </div>
-                        <div className="flex-shrink-0 rounded border border-[var(--color-border)] bg-slate-50 px-2.5 py-1.5 text-center">
-                          <div className="tabular-nums-feature text-base font-semibold leading-none text-[var(--color-ink)]">
-                            {opp.opportunity_score}
-                          </div>
-                          <div className="mt-0.5 text-[9px] uppercase tracking-wide text-[var(--color-slate-500)]">/10</div>
-                        </div>
-                      </div>
-                      <p className="mt-3 text-sm leading-relaxed text-[var(--color-slate-700)]">
-                        {opp.reason_for_relevance}
-                      </p>
-                      {opp.recommended_action && (
-                        <div className="mt-auto border-t border-[var(--color-border)] pt-4">
-                          <span className="text-xs font-medium uppercase tracking-wide text-[var(--color-slate-500)]">
-                            Recommended action
-                          </span>
-                          <p className="mt-1 text-sm text-[var(--color-slate-700)]">
-                            {opp.recommended_action}
-                          </p>
-                        </div>
-                      )}
+            <div className="mt-10 grid gap-5 sm:grid-cols-2 md:grid-cols-3">
+              {intelligenceFeatures.map((item) => (
+                <div
+                  key={item.title}
+                  className="rounded-md border border-[var(--color-border)] bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.05)]"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded border border-blue-100 bg-blue-50 text-[var(--color-amber)]">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        {item.icon}
+                      </svg>
                     </div>
-                  )
-                })}
-
-                <div
-                  className="hidden rounded-md border border-[var(--color-border)] bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.05)] md:block"
-                  aria-hidden="true"
-                >
-                  <div className="h-4 w-24 rounded bg-slate-100" />
-                  <div className="mt-3 h-5 w-2/3 rounded bg-slate-100" />
-                  <div className="mt-2 h-4 w-1/2 rounded bg-slate-100" />
+                    <h3 className="text-sm font-medium text-[var(--color-navy-900)]">{item.title}</h3>
+                  </div>
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--color-slate-500)]">{item.body}</p>
+                  {item.example && (
+                    <div className="mt-4 border-t border-[var(--color-border)] pt-4">
+                      {item.example}
+                    </div>
+                  )}
                 </div>
-                <div
-                  className="hidden rounded-md border border-[var(--color-border)] bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.05)] md:block"
-                  aria-hidden="true"
-                >
-                  <div className="h-4 w-24 rounded bg-slate-100" />
-                  <div className="mt-3 h-5 w-2/3 rounded bg-slate-100" />
-                  <div className="mt-2 h-4 w-1/2 rounded bg-slate-100" />
-                </div>
-              </div>
-
-              <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-white to-transparent"
-                aria-hidden="true"
-              />
-            </div>
-
-            <div className="mt-4 flex flex-col items-center text-center">
-              <Link
-                href="/signup"
-                className="rounded-md bg-[var(--color-amber)] px-6 py-3 text-sm font-medium text-white transition hover:bg-[var(--color-amber-light)]"
-              >
-                Subscribe to see all opportunities
-              </Link>
-              <p className="mt-4 max-w-md text-xs text-[var(--color-slate-500)]">
-                Optrace is an independent research service. It is not affiliated with,
-                endorsed by, or sponsored by the companies or projects named above.
-              </p>
+              ))}
             </div>
           </div>
         </section>
@@ -433,9 +774,9 @@ export default async function Home() {
             </p>
             <ul className="mt-6 space-y-3 text-sm text-[var(--color-slate-700)]">
               {[
-                "Full DFW commercial opportunity database",
-                "New verified opportunities added regularly",
-                "Save opportunities and track your pipeline",
+                "Commercial opportunity intelligence for the DFW market",
+                "Every opportunity scored, explained, and prioritised",
+                "Recommended next action on every project",
                 "Cancel anytime, no long-term contract",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2">
@@ -471,7 +812,7 @@ export default async function Home() {
       <section className="bg-[var(--color-navy-950)] py-20">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <h2 className="font-[family-name:var(--font-serif)] text-3xl italic leading-snug text-[var(--color-off-white)] md:text-4xl">
-            Find your next contract before your competitors even know it exists.
+            Stop searching for projects. Start knowing which ones are worth pursuing.
           </h2>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
